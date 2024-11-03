@@ -11,7 +11,7 @@
         "baseUrl": ".",
         "paths": {
             "@/*": [ "src/*" ],
-            "@app/*": [ "src/*" ]
+            "@app/*": [ "src/app/*" ]
         },
 
         /* Bundler mode */

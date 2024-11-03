@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: MIT
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
+import App from "@app/App.tsx";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
-import App from "./App.tsx";
+import "@app/index.css";
 
 const rootEl = document.getElementById("root");
 
