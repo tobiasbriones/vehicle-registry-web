@@ -4,8 +4,14 @@
 
 import react from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vite";
+// @ts-expect-error They must fix this dev dep to support its types correctly
+import eslint from "vite-plugin-eslint";
 
-// https://vite.dev/config/
+// https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [ react() ],
+    plugins: [
+        react(),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        eslint(),
+    ],
 });
