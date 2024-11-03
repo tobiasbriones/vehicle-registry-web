@@ -1,0 +1,27 @@
+{
+    "name": "vehicle-registry-web",
+    "version": "0.1.0-dev",
+    "description": "Frontend client for a vehicle registration web app that allows entrance and leave.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/tobiasbriones/vehicle-registry-web.git"
+    },
+    "keywords": [
+        "client",
+        "react",
+        "typescript",
+        "web-development",
+        "vehicle-registry",
+        "frontend"
+    ],
+    "author": "Tobias Briones",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/tobiasbriones/vehicle-registry-web/issues"
+    },
+    "homepage": "https://github.com/tobiasbriones/vehicle-registry-web#readme"
+}
