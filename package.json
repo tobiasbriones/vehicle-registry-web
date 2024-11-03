@@ -31,6 +31,7 @@
     },
     "homepage": "https://github.com/tobiasbriones/vehicle-registry-web#readme",
     "dependencies": {
+        "primeflex": "^3.3.1",
         "primeicons": "^7.0.0",
         "primereact": "^10.8.4",
         "react": "^18.3.1",
