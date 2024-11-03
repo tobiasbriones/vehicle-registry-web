@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: MIT
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
-import App from "@app/App.tsx";
+import { router } from "@app/router.tsx";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "@app/index.css";
+import { RouterProvider } from "react-router-dom";
 
 const rootEl = document.getElementById("root");
 
@@ -20,7 +21,7 @@ function render(rootEl: HTMLElement) {
     createRoot(rootEl)
         .render(
             <StrictMode>
-                <App />
+                <RouterProvider router={ router } />
             </StrictMode>,
         );
 }
