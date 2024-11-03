@@ -3,3 +3,11 @@
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
 /// <reference types="vite/client" />
+
+type ImportMetaEnv = {
+    readonly VITE_API_HOSTNAME?: string;
+}
+
+type ImportMeta = {
+    readonly env: ImportMetaEnv;
+}
