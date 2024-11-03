@@ -8,6 +8,13 @@
         "allowSyntheticDefaultImports": true,
         "types": [ "vitest/globals", "@testing-library/jest-dom" ],
 
+        /* Aliases */
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [ "src/*" ],
+            "@app/*": [ "src/app/*" ]
+        },
+
         /* Bundler mode */
         "moduleResolution": "bundler",
         "allowImportingTsExtensions": true,
