@@ -1,0 +1,45 @@
+/* Copyright (c) 2024 Tobias Briones. All rights reserved. */
+/* SPDX-License-Identifier: MIT */
+/* This file is part of https://github.com/tobiasbriones/vehicle-registry-web */
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+}
+
+.nav-logo .p-button {
+    margin-right: 0.5rem;
+}
+
+.nav-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-right: 2rem;
+    color: var(--primary-color-text, #ffffff);
+}
+
+.p-menuitem-content:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.p-menuitem-text {
+    color: var(--primary-color-text, #ffffff);
+}
+
+.p-menuitem-icon {
+    color: var(--indigo-200, #ffffff);
+}
+
+.custom-menubar {
+    position: fixed;
+    width: calc(100% - var(--scrollbar-width, 0px));
+    height: var(--nav-height);
+    left: 0;
+    top: 0;
+    z-index: 4;
+    transition: background-color .5s, border-color .5s;
+    border: none;
+    border-bottom: 1px solid transparent;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+}
