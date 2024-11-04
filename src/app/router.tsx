@@ -3,6 +3,7 @@
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
 import NotFound from "@app/NotFound.tsx";
+import { Vehicles } from "@app/vehicles/Vehicles.tsx";
 import { ReactNode } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import { RouteObject } from "react-router/dist/lib/context";
@@ -27,6 +28,10 @@ export const router = createBrowserRouter(
         {
             path: "/",
             element: <App />,
+        },
+        {
+            path: "/vehicles",
+            element: <Vehicles />,
         },
         {
             path: "*",
