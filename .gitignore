@@ -15,6 +15,7 @@ dist-ssr
 *.tsbuildinfo
 
 # dotenv environment variable files
+.env
 .env.*
 
 # Editor directories and files
