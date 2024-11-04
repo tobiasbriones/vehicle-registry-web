@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MIT
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
-import { Footer } from "@app/Footer.tsx";
-import { Nav } from "@app/Nav.tsx";
+import { Footer } from "@app/footer/Footer.tsx";
+import { Nav } from "@app/nav/Nav.tsx";
 import { ReactNode } from "react";
 
 type LayoutProps = {
