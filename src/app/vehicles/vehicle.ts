@@ -7,3 +7,9 @@ export type Vehicle = {
     brand: string,
     model: string,
 }
+
+export const emptyVehicle: Vehicle = {
+    number: "",
+    brand: "",
+    model: "",
+};
