@@ -178,6 +178,7 @@ function EditVehicleDialog(
 
     return <>
         <Dialog
+            className="vehicles-dialog"
             visible={ visible }
             onHide={ onHide }
             closeIcon="pi pi-times"

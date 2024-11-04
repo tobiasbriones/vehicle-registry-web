@@ -36,6 +36,11 @@
     margin-top: 1rem;
 }
 
+.vehicles-dialog label {
+    display: inline-block;
+    width: 5rem;
+}
+
 @media (min-width: 960px) {
     .vehicles-crud {
         width: 70%;
