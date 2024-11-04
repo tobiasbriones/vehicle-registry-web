@@ -3,6 +3,7 @@
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
 import { Footer } from "@app/Footer.tsx";
+import { Nav } from "@app/Nav.tsx";
 import { ReactNode } from "react";
 
 type LayoutProps = {
@@ -11,7 +12,11 @@ type LayoutProps = {
 
 function Layout({ children }: LayoutProps) {
     return <>
-        { children }
+        <Nav />
+
+        <div style={ { marginTop: "var(--nav-height)" } }>
+            { children }
+        </div>
 
         <Footer />
     </>;

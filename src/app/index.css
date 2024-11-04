@@ -25,6 +25,7 @@
 /* App sizes */
 :root {
     --content-padding: 5%;
+    --nav-height: 4rem;
 }
 
 a {
