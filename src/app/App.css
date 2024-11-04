@@ -3,9 +3,9 @@
 /* This file is part of https://github.com/tobiasbriones/vehicle-registry-web */
 
 #root {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem;
+    width: 100%;
+    margin: 0;
+    padding: 0;
     text-align: center;
 }
 
