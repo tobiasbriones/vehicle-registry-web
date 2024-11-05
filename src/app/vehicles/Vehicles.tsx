@@ -3,12 +3,15 @@
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
 import "./Vehicles.css";
+import { newVehicleService } from "@app/vehicles/vehicle.service.ts";
+import { noneLoadingContent } from "@components/loading/loading-content.ts";
+import { LoadingPane } from "@components/loading/LoadingPane.tsx";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { emptyVehicle, Vehicle } from "./vehicle.ts";
 
 export function Vehicles() {
@@ -16,8 +19,25 @@ export function Vehicles() {
     const [ selectedVehicle, setSelectedVehicle ]
         = useState<Vehicle | null>(null);
 
+    const [ loadingContent, setLoadingContent ] = useState(noneLoadingContent);
+
     const [ isDialogVisible, setIsDialogVisible ] = useState(false);
     const [ isEditing, setIsEditing ] = useState(false);
+
+    const setLoading = (message: string) => {
+        setLoadingContent({ type: "Loading", message });
+    };
+
+    const setError = (message: string) => (error: unknown) => {
+        setLoadingContent({
+            type: "Error",
+            message: `${ message } ${ String(error) }`,
+        });
+    };
+
+    const stopLoading = () => {
+        setLoadingContent(noneLoadingContent);
+    };
 
     const openNewVehicleDialog = () => {
         setSelectedVehicle({ number: "", brand: "", model: "" });
@@ -69,7 +89,7 @@ export function Vehicles() {
     };
 
     const renderHeader = () => (
-        <div className="table-header">
+        <div className="table-header flex-column sm:flex-row m-0">
             <h2>Vehicles</h2>
             <Button
                 label="Add Vehicle"
@@ -79,32 +99,49 @@ export function Vehicles() {
         </div>
     );
 
+    const renderFooter = () => (
+        <div className="table-header flex-column m-0 align-items-end">
+            <LoadingPane
+                content={ loadingContent }
+            />
+        </div>
+    );
+
     const renderActionButtons = (rowData: Vehicle) => (
         <>
             <Button
-                className="p-button-text mx-1"
+                className="p-button-text mx-1 my-1"
                 icon="pi pi-pencil"
                 onClick={ () => { openEditVehicleDialog(rowData); } }
             />
             <Button
-                className="p-button-text p-button-danger mx-1"
+                className="p-button-text p-button-danger mx-1 my-1"
                 icon="pi pi-trash"
                 onClick={ () => { deleteVehicle(rowData); } }
             />
         </>
     );
 
+    const service = useMemo(() => newVehicleService(), []);
+
     useEffect(() => {
-        // Fetch initial vehicles data from an API or set initial mock data
-        setVehicles([
-            { number: "ABC123", brand: "Toyota", model: "Corolla" },
-            { number: "XYZ789", brand: "Honda", model: "Civic" },
-        ]);
-    }, []);
+        const fetchVehicles = async () => await service.getAllVehicles();
+
+        setLoading("Loading vehicles...");
+
+        fetchVehicles()
+            .then(setVehicles)
+            .then(stopLoading)
+            .catch(setError(`Failed to fetch vehicles.`));
+    }, [ service ]);
 
     return <>
         <div className="vehicles-crud">
-            <DataTable value={ vehicles } header={ renderHeader() }>
+            <DataTable
+                value={ vehicles }
+                header={ renderHeader() }
+                footer={ renderFooter() }
+            >
                 <Column field="number" header="Number" />
                 <Column field="brand" header="Brand" />
                 <Column field="model" header="Model" />

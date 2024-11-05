@@ -11,18 +11,15 @@
     border-radius: 0.5rem;
 }
 
+.vehicles-crud .p-datatable > .p-datatable-footer {
+    background-color: white;
+    border-radius: 0.5rem;
+}
+
 .vehicles-crud .p-datatable-header,
 .vehicles-crud table > tbody > tr {
     background: none;
     border: none;
-}
-
-.vehicles-crud table > tbody > tr:last-child td:first-child {
-    border-bottom-left-radius: 0.5rem;
-}
-
-.vehicles-crud table > tbody > tr:last-child td:last-child {
-    border-bottom-right-radius: 0.5rem;
 }
 
 .table-header {
