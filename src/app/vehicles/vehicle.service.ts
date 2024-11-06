@@ -26,18 +26,15 @@ export const newVehicleService = (): VehicleService => ({
             body: JSON.stringify(vehicle),
         });
 
-        if (!response.ok) {
-            throw new Error("Failed to create vehicle");
-        }
+        await requireNoError(response);
+
         return await response.json() as Vehicle;
     },
 
     async getVehicleById(number: string) {
         const response = await fetch(`${ apiUrl }/vehicles/${ number }`);
 
-        if (!response.ok) {
-            throw new Error("Failed to fetch vehicle");
-        }
+        await requireNoError(response);
 
         return await response.json() as Vehicle;
     },
@@ -45,9 +42,7 @@ export const newVehicleService = (): VehicleService => ({
     async getAllVehicles() {
         const response = await fetch(`${ apiUrl }/vehicles`);
 
-        if (!response.ok) {
-            throw new Error("Fail to fetch vehicles");
-        }
+        await requireNoError(response);
 
         return await response.json() as Vehicle[];
     },
@@ -64,9 +59,8 @@ export const newVehicleService = (): VehicleService => ({
             },
         );
 
-        if (!response.ok) {
-            throw new Error("Failed to update vehicle");
-        }
+        await requireNoError(response);
+
         return await response.json() as Vehicle;
     },
 
@@ -75,8 +69,14 @@ export const newVehicleService = (): VehicleService => ({
             method: "DELETE",
         });
 
-        if (!response.ok) {
-            throw new Error("Failed to delete vehicle");
-        }
+        await requireNoError(response);
     },
 });
+
+async function requireNoError(response: Response) {
+    if (!response.ok) {
+        const body = await response.json() as { error: string };
+
+        throw new Error(body.error);
+    }
+}
