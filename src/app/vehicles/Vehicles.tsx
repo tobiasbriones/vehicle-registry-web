@@ -16,13 +16,17 @@ import { emptyVehicle, Vehicle } from "./vehicle.ts";
 
 export function Vehicles() {
     const [ vehicles, setVehicles ] = useState<Vehicle[]>([]);
-    const [ selectedVehicle, setSelectedVehicle ]
-        = useState<Vehicle | null>(null);
 
     const [ loadingContent, setLoadingContent ] = useState(noneLoadingContent);
 
-    const [ isDialogVisible, setIsDialogVisible ] = useState(false);
-    const [ isEditing, setIsEditing ] = useState(false);
+    const {
+        isDialogVisible,
+        isEditing,
+        selectedVehicle,
+        openNewVehicleDialog,
+        openEditVehicleDialog,
+        hideDialog,
+    } = useVehicleDialog();
 
     const service = useMemo(() => newVehicleService(), []);
 
@@ -39,23 +43,6 @@ export function Vehicles() {
 
     const stopLoading = () => {
         setLoadingContent(noneLoadingContent);
-    };
-
-    const openNewVehicleDialog = () => {
-        setSelectedVehicle({ number: "", brand: "", model: "" });
-        setIsEditing(false);
-        setIsDialogVisible(true);
-    };
-
-    const openEditVehicleDialog = (vehicle: Vehicle) => {
-        setSelectedVehicle(vehicle);
-        setIsEditing(true);
-        setIsDialogVisible(true);
-    };
-
-    const hideDialog = () => {
-        setIsDialogVisible(false);
-        setSelectedVehicle(null);
     };
 
     const registerVehicle = (vehicle: Vehicle) => {
@@ -296,4 +283,37 @@ function EditVehicleDialog(
             </div>
         </Dialog>
     </>;
+}
+
+function useVehicleDialog() {
+    const [ isDialogVisible, setIsDialogVisible ] = useState(false);
+    const [ isEditing, setIsEditing ] = useState(false);
+    const [ selectedVehicle, setSelectedVehicle ]
+        = useState<Vehicle | null>(null);
+
+    const openNewVehicleDialog = () => {
+        setSelectedVehicle({ number: "", brand: "", model: "" });
+        setIsEditing(false);
+        setIsDialogVisible(true);
+    };
+
+    const openEditVehicleDialog = (vehicle: Vehicle) => {
+        setSelectedVehicle(vehicle);
+        setIsEditing(true);
+        setIsDialogVisible(true);
+    };
+
+    const hideDialog = () => {
+        setIsDialogVisible(false);
+        setSelectedVehicle(null);
+    };
+
+    return {
+        isDialogVisible,
+        isEditing,
+        selectedVehicle,
+        openNewVehicleDialog,
+        openEditVehicleDialog,
+        hideDialog,
+    };
 }
