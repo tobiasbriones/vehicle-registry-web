@@ -177,7 +177,7 @@ function EditVehicleDialog(
                 <InputText
                     id="number"
                     value={ vehicle.number }
-                    onChange={ (e) => { onInputChange(e, "number"); } }
+                    onChange={ e => { onInputChange(e, "number"); } }
                     disabled={ action === "EditVehicle" }
                 />
             </div>
@@ -187,7 +187,7 @@ function EditVehicleDialog(
                 <InputText
                     id="brand"
                     value={ vehicle.brand }
-                    onChange={ (e) => { onInputChange(e, "brand"); } }
+                    onChange={ e => { onInputChange(e, "brand"); } }
                 />
             </div>
 
@@ -196,7 +196,7 @@ function EditVehicleDialog(
                 <InputText
                     id="model"
                     value={ vehicle.model }
-                    onChange={ (e) => { onInputChange(e, "model"); } }
+                    onChange={ e => { onInputChange(e, "model"); } }
                 />
             </div>
         </Dialog>
