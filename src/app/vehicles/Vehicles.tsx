@@ -4,6 +4,7 @@
 
 import "./Vehicles.css";
 import { newVehicleService } from "@app/vehicles/vehicle.service.ts";
+import { useVehicleDialog } from "@app/vehicles/vehicles.hook.ts";
 import { noneLoadingContent } from "@components/loading/loading-content.ts";
 import { LoadingPane } from "@components/loading/LoadingPane.tsx";
 import { Button } from "primereact/button";
@@ -283,37 +284,4 @@ function EditVehicleDialog(
             </div>
         </Dialog>
     </>;
-}
-
-function useVehicleDialog() {
-    const [ isDialogVisible, setIsDialogVisible ] = useState(false);
-    const [ isEditing, setIsEditing ] = useState(false);
-    const [ selectedVehicle, setSelectedVehicle ]
-        = useState<Vehicle | null>(null);
-
-    const openNewVehicleDialog = () => {
-        setSelectedVehicle({ number: "", brand: "", model: "" });
-        setIsEditing(false);
-        setIsDialogVisible(true);
-    };
-
-    const openEditVehicleDialog = (vehicle: Vehicle) => {
-        setSelectedVehicle(vehicle);
-        setIsEditing(true);
-        setIsDialogVisible(true);
-    };
-
-    const hideDialog = () => {
-        setIsDialogVisible(false);
-        setSelectedVehicle(null);
-    };
-
-    return {
-        isDialogVisible,
-        isEditing,
-        selectedVehicle,
-        openNewVehicleDialog,
-        openEditVehicleDialog,
-        hideDialog,
-    };
 }
