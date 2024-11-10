@@ -74,9 +74,18 @@ export const newVehicleService = (): VehicleService => ({
 });
 
 async function requireNoError(response: Response) {
-    if (!response.ok) {
-        const body = await response.json() as { error: string };
-
-        throw new Error(body.error);
+    if (response.ok) {
+        return;
     }
+    let body;
+
+    try {
+        body = await response.json() as { error: string };
+    }
+    catch (e: unknown) {
+        console.error(e);
+        body = { error: `Fail to read response error with status ${ response.status.toString() }.` };
+    }
+
+    throw new Error(body.error);
 }
