@@ -20,12 +20,25 @@ export async function requireNoError(response: Response) {
     let body;
 
     try {
-        body = await response.json() as { error: string };
+        const json = await response.json() as unknown;
+
+        if (isAppError(json)) {
+            body = json;
+        }
+        else {
+            body = { error: JSON.stringify(json, null, 4) };
+        }
     }
     catch (e: unknown) {
         console.error(e);
         body = { error: `Fail to read response error with status ${ response.status.toString() }.` };
     }
-
     throw new Error(body.error);
 }
+
+const isNonNullObject = (obj: unknown) =>
+    typeof obj === "object" && obj !== null;
+
+const isAppError = (error: unknown): error is AppError =>
+    isNonNullObject(error) &&
+    "error" in error;
