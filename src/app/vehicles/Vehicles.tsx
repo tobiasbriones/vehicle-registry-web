@@ -99,10 +99,10 @@ export function Vehicles() {
 
     const onSave = (vehicle: Vehicle, action: DialogAction) => {
         switch (action) {
-            case "Add Vehicle":
+            case "AddVehicle":
                 registerVehicle(vehicle);
                 break;
-            case "Edit Vehicle":
+            case "EditVehicle":
                 editVehicle(vehicle);
                 break;
         }
@@ -190,7 +190,7 @@ export function Vehicles() {
 
             <EditVehicleDialog
                 visible={ isDialogVisible }
-                action={ isEditing ? "Edit Vehicle" : "Add Vehicle" }
+                action={ isEditing ? "EditVehicle" : "AddVehicle" }
                 onSave={ onSave }
                 onHide={ hideDialog }
                 selectedVehicle={ selectedVehicle }
@@ -199,7 +199,12 @@ export function Vehicles() {
     </>;
 }
 
-type DialogAction = "Add Vehicle" | "Edit Vehicle";
+type DialogAction = "AddVehicle" | "EditVehicle";
+
+const actionToString = (action: DialogAction) => ({
+    "AddVehicle": "Add Vehicle",
+    "EditVehicle": "Edit Vehicle",
+}[action]);
 
 type EditVehicleDialogProps = {
     visible: boolean,
@@ -259,7 +264,7 @@ function EditVehicleDialog(
             visible={ visible }
             onHide={ onHide }
             closeIcon="pi pi-times"
-            header={ action }
+            header={ actionToString(action) }
             footer={ footer }
         >
             <div className="p-field">
@@ -268,7 +273,7 @@ function EditVehicleDialog(
                     id="number"
                     value={ vehicle.number }
                     onChange={ (e) => { onInputChange(e, "number"); } }
-                    disabled={ action === "Edit Vehicle" }
+                    disabled={ action === "EditVehicle" }
                 />
             </div>
 
