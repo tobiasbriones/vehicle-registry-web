@@ -9,7 +9,7 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { emptyVehicle, Vehicle } from "./vehicle.ts";
 import { useVehicleDialog, useVehicleService } from "./vehicles.hook.ts";
 
@@ -144,14 +144,96 @@ function EditVehicleDialog(
         </div>
     </>;
 
+    type VehicleValidationError = {
+        numberError: string | null,
+        brandError: string | null,
+        modelError: string | null,
+    }
+
+    const noValidationError: VehicleValidationError = useMemo(() => ({
+        brandError: null,
+        modelError: null,
+        numberError: null,
+    }), []);
+
+    const [ validationError, setValidationError ] = useState(noValidationError);
+
+    const validateNumber = (newValue: string) => {
+        const setNumberError = (numberError: string | null) => {
+            setValidationError(prevState => ({ ...prevState, numberError }));
+        };
+
+        if (newValue.trim() === "") {
+            setNumberError("Vehicle number cannot be blank.");
+        }
+        else if (newValue.length > 20) {
+            setNumberError("Vehicle number maximum length is 20 characters.");
+        }
+        else {
+            setNumberError(null);
+        }
+    };
+
+    const validateBrand = (newValue: string) => {
+        const setBrandError = (brandError: string | null) => {
+            setValidationError(prevState => ({ ...prevState, brandError }));
+        };
+
+        if (newValue.trim() === "") {
+            setBrandError("Vehicle brand cannot be blank.");
+        }
+        else if (newValue.length > 100) {
+            setBrandError("Vehicle brand maximum length is 100 characters.");
+        }
+        else {
+            setBrandError(null);
+        }
+    };
+
+    const validateModel = (newValue: string) => {
+        const setModelError = (modelError: string | null) => {
+            setValidationError(prevState => ({ ...prevState, modelError }));
+        };
+
+        if (newValue.trim() === "") {
+            setModelError("Vehicle model cannot be blank.");
+        }
+        else if (newValue.length > 100) {
+            setModelError("Vehicle model maximum length is 100 characters.");
+        }
+        else {
+            setModelError(null);
+        }
+    };
+
+    const validate = (newValue: string, field: keyof Vehicle) => {
+        switch (field) {
+            case "number":
+                validateNumber(newValue);
+                break;
+
+            case "brand":
+                validateBrand(newValue);
+                break;
+
+            case "model":
+                validateModel(newValue);
+                break;
+        }
+    };
+
     const onInputChange = (
         e: React.ChangeEvent<HTMLInputElement>,
         field: keyof Vehicle,
     ) => {
+        const newValue = e.target.value;
+
         setVehicle(prevVehicle => ({
             ...prevVehicle,
-            [field]: e.target.value,
+            [field]: newValue,
         }));
+
+        validate(newValue, field);
     };
 
     useEffect(() => {
@@ -160,8 +242,9 @@ function EditVehicleDialog(
         }
         else {
             setVehicle(emptyVehicle);
+            setValidationError(noValidationError);
         }
-    }, [ selectedVehicle ]);
+    }, [ noValidationError, selectedVehicle ]);
 
     return <>
         <Dialog
@@ -179,7 +262,10 @@ function EditVehicleDialog(
                     value={ vehicle.number }
                     onChange={ e => { onInputChange(e, "number"); } }
                     disabled={ action === "EditVehicle" }
+                    invalid={ validationError.numberError !== null }
                 />
+                { validationError.numberError &&
+                  <small className="block p-error">{ validationError.numberError }</small> }
             </div>
 
             <div className="p-field">
@@ -188,7 +274,10 @@ function EditVehicleDialog(
                     id="brand"
                     value={ vehicle.brand }
                     onChange={ e => { onInputChange(e, "brand"); } }
+                    invalid={ validationError.brandError !== null }
                 />
+                { validationError.brandError &&
+                  <small className="block p-error">{ validationError.brandError }</small> }
             </div>
 
             <div className="p-field">
@@ -197,7 +286,10 @@ function EditVehicleDialog(
                     id="model"
                     value={ vehicle.model }
                     onChange={ e => { onInputChange(e, "model"); } }
+                    invalid={ validationError.modelError !== null }
                 />
+                { validationError.modelError &&
+                  <small className="block p-error">{ validationError.modelError }</small> }
             </div>
         </Dialog>
     </>;
