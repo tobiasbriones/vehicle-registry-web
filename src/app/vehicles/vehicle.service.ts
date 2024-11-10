@@ -49,14 +49,16 @@ export const newVehicleService = (): VehicleService => ({
     },
 
     async updateVehicle(vehicle: Vehicle) {
+        const { number, ...vehicleUpdate } = vehicle;
+
         const response = await fetch(
-            `${ apiUrl }/vehicles/${ vehicle.number }`,
+            `${ apiUrl }/vehicles/${ number }`,
             {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(vehicle),
+                body: JSON.stringify(vehicleUpdate),
             },
         );
 
