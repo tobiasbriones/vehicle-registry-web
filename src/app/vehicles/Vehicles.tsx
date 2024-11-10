@@ -3,10 +3,6 @@
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
 import "./Vehicles.css";
-import {
-    useVehicleDialog,
-    useVehicleService,
-} from "./vehicles.hook.ts";
 import { LoadingPane } from "@components/loading/LoadingPane.tsx";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
@@ -15,6 +11,7 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import React, { useEffect, useState } from "react";
 import { emptyVehicle, Vehicle } from "./vehicle.ts";
+import { useVehicleDialog, useVehicleService } from "./vehicles.hook.ts";
 
 export function Vehicles() {
     const {
@@ -151,7 +148,10 @@ function EditVehicleDialog(
         e: React.ChangeEvent<HTMLInputElement>,
         field: keyof Vehicle,
     ) => {
-        setVehicle({ ...vehicle, [field]: e.target.value });
+        setVehicle(prevVehicle => ({
+            ...prevVehicle,
+            [field]: e.target.value,
+        }));
     };
 
     useEffect(() => {
