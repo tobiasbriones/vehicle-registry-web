@@ -24,14 +24,16 @@ export function Vehicles() {
     const [ isDialogVisible, setIsDialogVisible ] = useState(false);
     const [ isEditing, setIsEditing ] = useState(false);
 
+    const service = useMemo(() => newVehicleService(), []);
+
     const setLoading = (message: string) => {
         setLoadingContent({ type: "Loading", message });
     };
 
-    const setError = (message: string) => (error: unknown) => {
+    const setError = (error: unknown) => {
         setLoadingContent({
             type: "Error",
-            message: `${ message } ${ String(error) }`,
+            message: String(error),
         });
     };
 
@@ -56,36 +58,72 @@ export function Vehicles() {
         setSelectedVehicle(null);
     };
 
-    const addVehicle = (vehicle: Vehicle) => {
-        setVehicles(prevVehicles => [ ...prevVehicles, vehicle ]);
+    const registerVehicle = (vehicle: Vehicle) => {
+        const setNewVehicle = (res: Vehicle) => {
+            setVehicles([
+                ...vehicles,
+                res,
+            ]);
+        };
+
+        const addVehicle = async () => await service.addVehicle(vehicle);
+
+        setLoading("Creating vehicle...");
+
+        addVehicle()
+            .then(setNewVehicle)
+            .then(stopLoading)
+            .catch(setError);
     };
 
-    const updateVehicle = (vehicle: Vehicle) => {
-        setVehicles(prevVehicles =>
-            prevVehicles.map(v =>
-                v.number === vehicle.number
-                ? vehicle
-                : v,
-            ),
-        );
+    const editVehicle = (vehicle: Vehicle) => {
+        const setUpdatedVehicle = (res: Vehicle) => {
+            setVehicles(prevVehicles =>
+                prevVehicles.map(v =>
+                    v.number === res.number
+                    ? res
+                    : v,
+                ),
+            );
+        };
+
+        const updateVehicle = async () => await service.updateVehicle(vehicle);
+
+        setLoading("Updating vehicle...");
+
+        updateVehicle()
+            .then(setUpdatedVehicle)
+            .then(stopLoading)
+            .catch(setError);
     };
 
     const onSave = (vehicle: Vehicle, action: DialogAction) => {
         switch (action) {
             case "Add Vehicle":
-                addVehicle(vehicle);
+                registerVehicle(vehicle);
                 break;
             case "Edit Vehicle":
-                updateVehicle(vehicle);
+                editVehicle(vehicle);
                 break;
         }
         hideDialog();
     };
 
     const deleteVehicle = (vehicle: Vehicle) => {
-        setVehicles(prevVehicles => prevVehicles.filter(
-            v => v.number !== vehicle.number,
-        ));
+        const setRemovedVehicle = () => {
+            setVehicles(prevVehicles => prevVehicles.filter(
+                v => v.number !== vehicle.number,
+            ));
+        };
+
+        const deleteVehicle = async () => { await service.deleteVehicle(vehicle.number); };
+
+        setLoading("Deleting vehicle...");
+
+        deleteVehicle()
+            .then(setRemovedVehicle)
+            .then(stopLoading)
+            .catch(setError);
     };
 
     const renderHeader = () => (
@@ -122,9 +160,11 @@ export function Vehicles() {
         </>
     );
 
-    const service = useMemo(() => newVehicleService(), []);
-
     useEffect(() => {
+        const setErrorWithMessage = (message: string) => (error: unknown) => {
+            setError(`${ message } ${ String(error) }`);
+        };
+
         const fetchVehicles = async () => await service.getAllVehicles();
 
         setLoading("Loading vehicles...");
@@ -132,7 +172,7 @@ export function Vehicles() {
         fetchVehicles()
             .then(setVehicles)
             .then(stopLoading)
-            .catch(setError(`Failed to fetch vehicles.`));
+            .catch(setErrorWithMessage(`Failed to fetch vehicles.`));
     }, [ service ]);
 
     return <>
