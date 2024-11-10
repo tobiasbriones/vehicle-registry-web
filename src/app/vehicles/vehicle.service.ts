@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
+import { requireNoError } from "@app/error.ts";
 import { Vehicle } from "./vehicle.ts";
 
 export type VehicleService = {
@@ -72,20 +73,3 @@ export const newVehicleService = (): VehicleService => ({
         await requireNoError(response);
     },
 });
-
-async function requireNoError(response: Response) {
-    if (response.ok) {
-        return;
-    }
-    let body;
-
-    try {
-        body = await response.json() as { error: string };
-    }
-    catch (e: unknown) {
-        console.error(e);
-        body = { error: `Fail to read response error with status ${ response.status.toString() }.` };
-    }
-
-    throw new Error(body.error);
-}
