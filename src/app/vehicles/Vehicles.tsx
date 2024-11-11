@@ -127,23 +127,6 @@ function EditVehicleDialog(
 ) {
     const [ vehicle, setVehicle ] = useState<Vehicle>(emptyVehicle);
 
-    const footer = <>
-        <div>
-            <Button
-                label="Cancel"
-                icon="pi pi-times"
-                onClick={ onHide }
-                className="p-button-text"
-            />
-            <Button
-                label="Save"
-                icon="pi pi-check"
-                onClick={ () => { onSave(vehicle, action); } }
-                autoFocus
-            />
-        </div>
-    </>;
-
     type VehicleValidationError = {
         numberError: string | null,
         brandError: string | null,
@@ -162,6 +145,7 @@ function EditVehicleDialog(
         const setNumberError = (numberError: string | null) => {
             setValidationError(prevState => ({ ...prevState, numberError }));
         };
+        let isValid = false;
 
         if (newValue.trim() === "") {
             setNumberError("Vehicle number cannot be blank.");
@@ -171,13 +155,17 @@ function EditVehicleDialog(
         }
         else {
             setNumberError(null);
+            isValid = true;
         }
+
+        return isValid;
     };
 
     const validateBrand = (newValue: string) => {
         const setBrandError = (brandError: string | null) => {
             setValidationError(prevState => ({ ...prevState, brandError }));
         };
+        let isValid = false;
 
         if (newValue.trim() === "") {
             setBrandError("Vehicle brand cannot be blank.");
@@ -187,13 +175,17 @@ function EditVehicleDialog(
         }
         else {
             setBrandError(null);
+            isValid = true;
         }
+
+        return isValid;
     };
 
     const validateModel = (newValue: string) => {
         const setModelError = (modelError: string | null) => {
             setValidationError(prevState => ({ ...prevState, modelError }));
         };
+        let isValid = false;
 
         if (newValue.trim() === "") {
             setModelError("Vehicle model cannot be blank.");
@@ -203,7 +195,10 @@ function EditVehicleDialog(
         }
         else {
             setModelError(null);
+            isValid = true;
         }
+
+        return isValid;
     };
 
     const validate = (newValue: string, field: keyof Vehicle) => {
@@ -235,6 +230,34 @@ function EditVehicleDialog(
 
         validate(newValue, field);
     };
+
+    const validateVehicle = () =>
+        validateNumber(vehicle.number) &&
+        validateBrand(vehicle.brand) &&
+        validateModel(vehicle.model);
+
+    const onSubmit = () => {
+        if (validateVehicle()) {
+            onSave(vehicle, action);
+        }
+    };
+
+    const footer = <>
+        <div>
+            <Button
+                label="Cancel"
+                icon="pi pi-times"
+                onClick={ onHide }
+                className="p-button-text"
+            />
+            <Button
+                label="Save"
+                icon="pi pi-check"
+                onClick={ onSubmit }
+                autoFocus
+            />
+        </div>
+    </>;
 
     useEffect(() => {
         if (selectedVehicle) {
