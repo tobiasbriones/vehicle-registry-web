@@ -31,11 +31,13 @@
     },
     "homepage": "https://github.com/tobiasbriones/vehicle-registry-web#readme",
     "dependencies": {
+        "final-form": "^4.20.10",
         "primeflex": "^3.3.1",
         "primeicons": "^7.0.0",
         "primereact": "^10.8.4",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
+        "react-final-form": "^6.5.9",
         "react-router-dom": "^6.22.0"
     },
     "devDependencies": {
