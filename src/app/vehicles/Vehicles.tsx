@@ -4,12 +4,14 @@
 
 import "./Vehicles.css";
 import { LoadingPane } from "@components/loading/LoadingPane.tsx";
+import { FormApi } from "final-form";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import React, { useEffect, useMemo, useState } from "react";
+import { classNames } from "primereact/utils";
+import { Field, FieldMetaState, Form, FormRenderProps } from "react-final-form";
 import { emptyVehicle, Vehicle } from "./vehicle.ts";
 import { useVehicleDialog, useVehicleService } from "./vehicles.hook.ts";
 
@@ -125,150 +127,6 @@ function EditVehicleDialog(
         selectedVehicle,
     }: EditVehicleDialogProps,
 ) {
-    const [ vehicle, setVehicle ] = useState<Vehicle>(emptyVehicle);
-
-    type VehicleValidationError = {
-        numberError: string | null,
-        brandError: string | null,
-        modelError: string | null,
-    }
-
-    const noValidationError: VehicleValidationError = useMemo(() => ({
-        brandError: null,
-        modelError: null,
-        numberError: null,
-    }), []);
-
-    const [ validationError, setValidationError ] = useState(noValidationError);
-
-    const validateNumber = (newValue: string) => {
-        const setNumberError = (numberError: string | null) => {
-            setValidationError(prevState => ({ ...prevState, numberError }));
-        };
-        let isValid = false;
-
-        if (newValue.trim() === "") {
-            setNumberError("Vehicle number cannot be blank.");
-        }
-        else if (newValue.length > 20) {
-            setNumberError("Vehicle number maximum length is 20 characters.");
-        }
-        else {
-            setNumberError(null);
-            isValid = true;
-        }
-
-        return isValid;
-    };
-
-    const validateBrand = (newValue: string) => {
-        const setBrandError = (brandError: string | null) => {
-            setValidationError(prevState => ({ ...prevState, brandError }));
-        };
-        let isValid = false;
-
-        if (newValue.trim() === "") {
-            setBrandError("Vehicle brand cannot be blank.");
-        }
-        else if (newValue.length > 100) {
-            setBrandError("Vehicle brand maximum length is 100 characters.");
-        }
-        else {
-            setBrandError(null);
-            isValid = true;
-        }
-
-        return isValid;
-    };
-
-    const validateModel = (newValue: string) => {
-        const setModelError = (modelError: string | null) => {
-            setValidationError(prevState => ({ ...prevState, modelError }));
-        };
-        let isValid = false;
-
-        if (newValue.trim() === "") {
-            setModelError("Vehicle model cannot be blank.");
-        }
-        else if (newValue.length > 100) {
-            setModelError("Vehicle model maximum length is 100 characters.");
-        }
-        else {
-            setModelError(null);
-            isValid = true;
-        }
-
-        return isValid;
-    };
-
-    const validate = (newValue: string, field: keyof Vehicle) => {
-        switch (field) {
-            case "number":
-                validateNumber(newValue);
-                break;
-
-            case "brand":
-                validateBrand(newValue);
-                break;
-
-            case "model":
-                validateModel(newValue);
-                break;
-        }
-    };
-
-    const onInputChange = (
-        e: React.ChangeEvent<HTMLInputElement>,
-        field: keyof Vehicle,
-    ) => {
-        const newValue = e.target.value;
-
-        setVehicle(prevVehicle => ({
-            ...prevVehicle,
-            [field]: newValue,
-        }));
-
-        validate(newValue, field);
-    };
-
-    const validateVehicle = () =>
-        validateNumber(vehicle.number) &&
-        validateBrand(vehicle.brand) &&
-        validateModel(vehicle.model);
-
-    const onSubmit = () => {
-        if (validateVehicle()) {
-            onSave(vehicle, action);
-        }
-    };
-
-    const footer = <>
-        <div>
-            <Button
-                label="Cancel"
-                icon="pi pi-times"
-                onClick={ onHide }
-                className="p-button-text"
-            />
-            <Button
-                label="Save"
-                icon="pi pi-check"
-                onClick={ onSubmit }
-                autoFocus
-            />
-        </div>
-    </>;
-
-    useEffect(() => {
-        if (selectedVehicle) {
-            setVehicle(selectedVehicle);
-        }
-        else {
-            setVehicle(emptyVehicle);
-            setValidationError(noValidationError);
-        }
-    }, [ noValidationError, selectedVehicle ]);
-
     return <>
         <Dialog
             className="vehicles-dialog"
@@ -276,44 +134,182 @@ function EditVehicleDialog(
             onHide={ onHide }
             closeIcon="pi pi-times"
             header={ actionToString(action) }
-            footer={ footer }
         >
-            <div className="p-field">
-                <label htmlFor="number">Number</label>
-                <InputText
-                    id="number"
-                    value={ vehicle.number }
-                    onChange={ e => { onInputChange(e, "number"); } }
-                    disabled={ action === "EditVehicle" }
-                    invalid={ validationError.numberError !== null }
-                />
-                { validationError.numberError &&
-                  <small className="block p-error">{ validationError.numberError }</small> }
-            </div>
-
-            <div className="p-field">
-                <label htmlFor="brand">Brand</label>
-                <InputText
-                    id="brand"
-                    value={ vehicle.brand }
-                    onChange={ e => { onInputChange(e, "brand"); } }
-                    invalid={ validationError.brandError !== null }
-                />
-                { validationError.brandError &&
-                  <small className="block p-error">{ validationError.brandError }</small> }
-            </div>
-
-            <div className="p-field">
-                <label htmlFor="model">Model</label>
-                <InputText
-                    id="model"
-                    value={ vehicle.model }
-                    onChange={ e => { onInputChange(e, "model"); } }
-                    invalid={ validationError.modelError !== null }
-                />
-                { validationError.modelError &&
-                  <small className="block p-error">{ validationError.modelError }</small> }
-            </div>
+            <EditVehicleForm
+                action={ action }
+                onSave={ onSave }
+                onCancel={ onHide }
+                selectedVehicle={ selectedVehicle }
+            />
         </Dialog>
+    </>;
+}
+
+type EditVehicleFormProps = {
+    action: DialogAction,
+    onSave: (vehicle: Vehicle, action: DialogAction) => void,
+    onCancel: () => void,
+    selectedVehicle?: Vehicle | null,
+}
+
+function EditVehicleForm(
+    {
+        action,
+        onSave,
+        onCancel,
+        selectedVehicle,
+    }: EditVehicleFormProps,
+) {
+    const validate = (formVehicle: Vehicle) => {
+        const errors: Partial<Vehicle> = {};
+
+        if (!formVehicle.number || formVehicle.number.trim() === "") {
+            errors.number = "Vehicle number cannot be blank.";
+        }
+        else if (formVehicle.number.length > 20) {
+            errors.number = "Vehicle number maximum length is 20 characters.";
+        }
+
+        if (!formVehicle.brand || formVehicle.brand.trim() === "") {
+            errors.brand = "Vehicle brand cannot be blank.";
+        }
+        else if (formVehicle.brand.length > 100) {
+            errors.brand = "Vehicle brand maximum length is 100 characters.";
+        }
+
+        if (!formVehicle.model || formVehicle.model.trim() === "") {
+            errors.model = "Vehicle model cannot be blank.";
+        }
+        else if (formVehicle.model.length > 100) {
+            errors.model = "Vehicle model maximum length is 100 characters.";
+        }
+
+        return errors;
+    };
+
+    const onSubmit = (
+        formVehicle: Vehicle,
+        form: FormApi<Vehicle, Vehicle>,
+    ) => {
+        onSave(formVehicle, action);
+
+        form.restart();
+    };
+
+    const isFormFieldValid = (meta: FieldMetaState<unknown>) =>
+        !!(meta.touched && meta.error);
+
+    const getFormErrorMessage = (meta: FieldMetaState<unknown>) =>
+        isFormFieldValid(meta) &&
+        <small className="p-error">{ meta.error }</small>;
+
+    const formBody = ({ handleSubmit }: FormRenderProps<Vehicle, Vehicle>) => <>
+        <form onSubmit={ event => { void handleSubmit(event); } }>
+            <Field
+                name="number"
+                render={ ({ input, meta }) => (
+                    <div className="field mt-4">
+                        <span className="p-float-label">
+                            <InputText
+                                id="number"
+                                { ...input }
+                                autoFocus
+                                className={ classNames({
+                                    "p-invalid": isFormFieldValid(meta),
+                                }) }
+                                disabled={ action === "EditVehicle" }
+                            />
+                            <label
+                                htmlFor="number"
+                                className={ classNames({
+                                    "p-error": isFormFieldValid(meta),
+                                }) }
+                            >
+                                Number
+                            </label>
+                        </span>
+                        { getFormErrorMessage(meta) }
+                    </div>
+                ) }
+            />
+
+            <Field
+                name="brand"
+                render={ ({ input, meta }) => (
+                    <div className="field mt-5">
+                        <span className="p-float-label">
+                            <InputText
+                                id="brand"
+                                { ...input }
+                                autoFocus
+                                className={ classNames({
+                                    "p-invalid": isFormFieldValid(meta),
+                                }) }
+                            />
+                            <label
+                                htmlFor="brand"
+                                className={ classNames({
+                                    "p-error": isFormFieldValid(meta),
+                                }) }
+                            >
+                                Brand
+                            </label>
+                        </span>
+                        { getFormErrorMessage(meta) }
+                    </div>
+                ) }
+            />
+
+            <Field
+                name="model"
+                render={ ({ input, meta }) => (
+                    <div className="field mt-5">
+                        <span className="p-float-label">
+                            <InputText
+                                id="model"
+                                { ...input }
+                                autoFocus
+                                className={ classNames({
+                                    "p-invalid": isFormFieldValid(meta),
+                                }) }
+                            />
+                            <label
+                                htmlFor="model"
+                                className={ classNames({
+                                    "p-error": isFormFieldValid(meta),
+                                }) }
+                            >
+                                Model
+                            </label>
+                        </span>
+                        { getFormErrorMessage(meta) }
+                    </div>
+                ) }
+            />
+
+            <div className="flex mt-4 justify-content-end gap-4">
+                <Button
+                    label="Cancel"
+                    icon="pi pi-times"
+                    onClick={ onCancel }
+                    className="p-button-text"
+                />
+                <Button
+                    type="submit"
+                    label="Save"
+                    icon="pi pi-check"
+                    autoFocus
+                />
+            </div>
+        </form>
+    </>;
+
+    return <>
+        <Form
+            validate={ validate }
+            initialValues={ selectedVehicle ?? emptyVehicle }
+            onSubmit={ onSubmit }
+            render={ formBody }
+        />
     </>;
 }
