@@ -16,6 +16,12 @@ leave.
 
 Install project dependencies via `npm install`.
 
+To completely integrate the application either in production or locally, you
+will need to  
+[set up the API server and database](https://github.com/tobiasbriones/vehicle-registry-api)
+and ensure to set your [environment variables](#environment-variables)
+accordingly.
+
 Run development mode via `npm run dev`.
 
 Run tests via `npm run test`.
