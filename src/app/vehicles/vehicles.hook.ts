@@ -5,7 +5,7 @@
 import { newVehicleService } from "@app/vehicles/vehicle.service.ts";
 import { Vehicle } from "@app/vehicles/vehicle.ts";
 import { useLoadingPane } from "@components/loading/loading-pane.hook.ts";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 export function useVehicleService() {
     const [ vehicles, setVehicles ] = useState<Vehicle[]>([]);
@@ -17,6 +17,20 @@ export function useVehicleService() {
     } = useLoadingPane();
 
     const service = useMemo(() => newVehicleService(), []);
+
+    const fetchVehicles = useCallback(() => {
+        const setErrorWithMessage = (message: string) => (error: unknown) => {
+            setError(`${ message } ${ String(error) }`);
+        };
+
+        setLoading("Loading vehicles...");
+
+        service
+            .getAllVehicles()
+            .then(setVehicles)
+            .then(stopLoading)
+            .catch(setErrorWithMessage(`Failed to fetch vehicles.`));
+    }, [ service, setError, setLoading, stopLoading ]);
 
     const registerVehicle = useCallback(
         (vehicle: Vehicle) => {
@@ -67,23 +81,10 @@ export function useVehicleService() {
         [ service, setError, setLoading, stopLoading ],
     );
 
-    useEffect(() => {
-        const setErrorWithMessage = (message: string) => (error: unknown) => {
-            setError(`${ message } ${ String(error) }`);
-        };
-
-        setLoading("Loading vehicles...");
-
-        service
-            .getAllVehicles()
-            .then(setVehicles)
-            .then(stopLoading)
-            .catch(setErrorWithMessage(`Failed to fetch vehicles.`));
-    }, [ service, setError, setLoading, stopLoading ]);
-
     return {
         vehicles,
         loadingContent,
+        fetchVehicles,
         registerVehicle,
         editVehicle,
         deleteVehicle,

@@ -11,6 +11,7 @@ import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
+import { useEffect } from "react";
 import { Field, FieldMetaState, Form, FormRenderProps } from "react-final-form";
 import { emptyVehicle, Vehicle } from "./vehicle.ts";
 import { useVehicleDialog, useVehicleService } from "./vehicles.hook.ts";
@@ -19,6 +20,7 @@ export function Vehicles() {
     const {
         vehicles,
         loadingContent,
+        fetchVehicles,
         registerVehicle,
         editVehicle,
         deleteVehicle,
@@ -78,6 +80,8 @@ export function Vehicles() {
             />
         </>
     );
+
+    useEffect(fetchVehicles, [ fetchVehicles ]);
 
     return <>
         <div className="vehicles-crud">
