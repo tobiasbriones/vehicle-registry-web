@@ -8,7 +8,7 @@ import { Vehicle } from "./vehicle.ts";
 export type VehicleService = {
     addVehicle: (vehicle: Vehicle) => Promise<Vehicle>;
     getVehicleById: (number: string) => Promise<Vehicle>;
-    getAllVehicles: () => Promise<Vehicle[]>;
+    getAllVehicles: (limit?: number, page?: number) => Promise<Vehicle[]>;
     updateVehicle: (vehicle: Vehicle) => Promise<Vehicle>;
     deleteVehicle: (number: string) => Promise<void>;
 };
@@ -40,8 +40,25 @@ export const newVehicleService = (): VehicleService => ({
         return await response.json() as Vehicle;
     },
 
-    async getAllVehicles() {
-        const response = await fetch(`${ apiUrl }/vehicles`);
+    async getAllVehicles(limit, page) {
+        const queryParams = new URLSearchParams();
+
+        if (limit !== undefined) {
+            queryParams.append("limit", limit.toString());
+        }
+        if (page !== undefined) {
+            queryParams.append("page", page.toString());
+        }
+
+        const baseEndpointUrl = `${ apiUrl }/vehicles`;
+
+        const url = `${ baseEndpointUrl }${
+            queryParams.toString()
+            ? `?${ queryParams.toString() }`
+            : ""
+        }`;
+
+        const response = await fetch(url);
 
         await requireNoError(response);
 
