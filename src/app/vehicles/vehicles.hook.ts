@@ -7,7 +7,7 @@ import { Vehicle } from "@app/vehicles/vehicle.ts";
 import { useLoadingPane } from "@components/loading/loading-pane.hook.ts";
 import { useCallback, useMemo, useState } from "react";
 
-export function useVehicleService() {
+export function useVehicleService(limit?: number, page?: number) {
     const [ vehicles, setVehicles ] = useState<Vehicle[]>([]);
     const {
         loadingContent,
@@ -26,11 +26,11 @@ export function useVehicleService() {
         setLoading("Loading vehicles...");
 
         service
-            .getAllVehicles()
+            .getAllVehicles(limit, page)
             .then(setVehicles)
             .then(stopLoading)
             .catch(setErrorWithMessage(`Failed to fetch vehicles.`));
-    }, [ service, setError, setLoading, stopLoading ]);
+    }, [ limit, page, service, setError, setLoading, stopLoading ]);
 
     const registerVehicle = useCallback(
         (vehicle: Vehicle) => {

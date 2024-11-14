@@ -17,6 +17,15 @@ import { emptyVehicle, Vehicle } from "./vehicle.ts";
 import { useVehicleDialog, useVehicleService } from "./vehicles.hook.ts";
 
 export function Vehicles() {
+    const tableRowLimit = 5;
+
+    // Load 30 vehicles into the table maximum (the last ones added). If you
+    // want to show "older" vehicles you will have to enhance the pagination
+    // to support an unlimited amount of pages.
+    const maxLimit = 30;
+
+    const defPage = 1;
+
     const {
         vehicles,
         loadingContent,
@@ -24,7 +33,7 @@ export function Vehicles() {
         registerVehicle,
         editVehicle,
         deleteVehicle,
-    } = useVehicleService();
+    } = useVehicleService(maxLimit, defPage);
 
     const {
         isDialogVisible,
@@ -89,6 +98,9 @@ export function Vehicles() {
                 value={ vehicles }
                 header={ renderHeader() }
                 footer={ renderFooter() }
+                paginator
+                rows={ tableRowLimit }
+                rowsPerPageOptions={ [ 5, 10, 25, 50 ] }
             >
                 <Column field="number" header="Number" />
                 <Column field="brand" header="Brand" />
