@@ -18,14 +18,6 @@
     color: var(--primary-color-text, #ffffff);
 }
 
-.p-menuitem-content:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-.p-menuitem-text {
-    color: var(--primary-color-text, #ffffff);
-}
-
 .p-menuitem-icon {
     color: var(--indigo-200, #ffffff);
 }
@@ -42,4 +34,14 @@
     border-bottom: 1px solid transparent;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(8px);
+}
+
+@media (min-width: 960px) {
+    .p-menuitem-text {
+        color: var(--primary-color-text, #ffffff);
+    }
+
+    .p-menuitem-content:hover {
+        background: rgba(255, 255, 255, 0.2) none;
+    }
 }
