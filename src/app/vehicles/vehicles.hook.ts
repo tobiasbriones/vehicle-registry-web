@@ -39,7 +39,7 @@ export function useVehicleService(limit?: number, page?: number) {
             service
                 .addVehicle(vehicle)
                 .then((res: Vehicle) => {
-                    setVehicles(prevVehicles => [ ...prevVehicles, res ]);
+                    setVehicles(prevVehicles => [ res, ...prevVehicles ]);
                 })
                 .then(stopLoading)
                 .catch(setError);
