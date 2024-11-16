@@ -17,7 +17,7 @@ export async function requireNoError(response: Response) {
         return;
     }
 
-    let body;
+    let body: AppError;
 
     try {
         const json = await response.json() as unknown;
@@ -31,9 +31,9 @@ export async function requireNoError(response: Response) {
     }
     catch (e: unknown) {
         console.error(e);
-        body = { error: `Fail to read response error with status ${ response.status.toString() }.` };
+        body = { error: `Fail to read response error with status ${ response.status.toString() }.` } as AppError;
     }
-    throw new Error(body.error);
+    throw new Error(JSON.stringify(body.error));
 }
 
 const isNonNullObject = (obj: unknown) =>
