@@ -17,9 +17,9 @@ export const LoadingIndicator = (
 
     return <>
         <div
-            className={ `loading-indicator flex flex-row align-items-center justify-content-center mb-2 ${ showClass }` }
+            className={ `loading-indicator max-w-full flex flex-row align-items-center justify-content-center mb-2 ${ showClass }` }
         >
-            <div className="mx-2">{ message }</div>
+            <div className="mx-2">{ show ? message : "" }</div>
             <ProgressSpinner />
         </div>
     </>;
