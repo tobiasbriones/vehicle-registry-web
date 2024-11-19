@@ -2,43 +2,34 @@
 // SPDX-License-Identifier: MIT
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
-/**
- * Defines the error type the API uses throughout the application.
- */
-export type AppError = {
-    error: string,
-}
+import { AppError, isAppError } from "@common/app/app.error.ts";
+import { objToString } from "@common/utils.ts";
+
+type ClientError = { message: string, info?: object } | AppError;
 
 /**
- * Throws an `AppError` if the response is not `ok`.
+ * Throws a `ClientError` if the response is not `ok`.
  */
 export async function requireNoError(response: Response) {
     if (response.ok) {
         return;
     }
 
-    let body: AppError;
+    let error: ClientError;
 
     try {
-        const json = await response.json() as unknown;
+        const json = await response.json() as object;
 
         if (isAppError(json)) {
-            body = json;
+            error = json;
         }
         else {
-            body = { error: JSON.stringify(json, null, 4) };
+            error = { message: "Fail to read server error.", info: json };
         }
     }
     catch (e: unknown) {
         console.error(e);
-        body = { error: `Fail to read response error with status ${ response.status.toString() }.` } as AppError;
+        error = { message: `Fail to read response error with status ${ response.status.toString() }.` } as ClientError;
     }
-    throw new Error(JSON.stringify(body.error));
+    throw new Error(objToString(error));
 }
-
-const isNonNullObject = (obj: unknown) =>
-    typeof obj === "object" && obj !== null;
-
-const isAppError = (error: unknown): error is AppError =>
-    isNonNullObject(error) &&
-    "error" in error;
