@@ -11,6 +11,29 @@
 export const objToString = (obj: object | undefined | null): string =>
     JSON.stringify(obj, jsonReplacer, 4);
 
+/**
+ * Converts a primitive value or object to a printable string.
+ *
+ * @param value value to convert to string
+ * @returns {string} pretty string version representing the value
+ */
+export const valToString = (value: unknown): string => {
+    let string: string;
+
+    if (typeof value === "string") {
+        string = value;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    else if (typeof value === "object" || value === undefined || value === null) {
+        string = objToString(value);
+    }
+    else {
+        // eslint-disable-next-line @typescript-eslint/no-base-to-string
+        string = String(value);
+    }
+    return string;
+};
+
 function jsonReplacer(_: string, value: unknown) {
     if (value === undefined || value === null) {
         return null;

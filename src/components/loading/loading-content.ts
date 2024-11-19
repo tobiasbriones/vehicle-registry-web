@@ -6,7 +6,7 @@ export type LoadingMessageType = "None" | "Loading" | "Error";
 
 export type LoadingContent = {
     type: LoadingMessageType,
-    message: string,
+    info: string | object,
 }
 
-export const noneLoadingContent: LoadingContent = { type: "None", message: "" };
+export const noneLoadingContent: LoadingContent = { type: "None", info: "" };

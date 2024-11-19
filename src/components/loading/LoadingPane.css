@@ -3,6 +3,11 @@
 /* This file is part of https://github.com/tobiasbriones/vehicle-registry-web */
 
 .error {
+    max-width: 100%;
     font-size: 0.75rem;
+}
+
+.error-color {
     color: #d32f2f;
+    font-weight: bold;
 }
