@@ -25,7 +25,7 @@ describe("useLoadingPane", () => {
 
             expect(result.current.loadingContent).toEqual({
                 type: "Loading",
-                message: "Loading data...",
+                info: "Loading data...",
             });
         },
     );
@@ -39,7 +39,7 @@ describe("useLoadingPane", () => {
 
         expect(result.current.loadingContent).toEqual({
             type: "Error",
-            message: "An error occurred",
+            info: "An error occurred",
         });
     });
 
