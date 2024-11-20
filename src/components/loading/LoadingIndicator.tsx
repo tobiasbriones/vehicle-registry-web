@@ -10,9 +10,9 @@ type LoadingIndicatorProps = {
     message: string,
 };
 
-export const LoadingIndicator = (
+export function LoadingIndicator(
     { show, message }: LoadingIndicatorProps,
-) => {
+) {
     const showClass = show ? "" : "opacity-0";
 
     return <>
@@ -23,4 +23,4 @@ export const LoadingIndicator = (
             <ProgressSpinner />
         </div>
     </>;
-};
+}
