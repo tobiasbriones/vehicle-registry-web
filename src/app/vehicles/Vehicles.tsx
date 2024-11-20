@@ -6,16 +6,17 @@ import "./Vehicles.css";
 import { isAppError } from "@common/app/app.error.ts";
 import { valToString } from "@common/utils.ts";
 import { AppErrorPane } from "@components/app-error/AppErrorPane.tsx";
+import {
+    DialogFormField,
+} from "@components/crud/dialog-form-field/DialogFormField.tsx";
 import { LoadingPane } from "@components/loading/LoadingPane.tsx";
 import { FormApi } from "final-form";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
-import { InputText } from "primereact/inputtext";
-import { classNames } from "primereact/utils";
 import { useEffect } from "react";
-import { Field, FieldMetaState, Form, FormRenderProps } from "react-final-form";
+import { Field, Form, FormRenderProps } from "react-final-form";
 import { emptyVehicle, Vehicle } from "./vehicle.ts";
 import { useVehicleDialog, useVehicleService } from "./vehicles.hook.ts";
 
@@ -221,95 +222,46 @@ function EditVehicleForm(
         form.restart();
     };
 
-    const isFormFieldValid = (meta: FieldMetaState<unknown>) =>
-        !!(meta.touched && meta.error);
-
-    const getFormErrorMessage = (meta: FieldMetaState<unknown>) =>
-        isFormFieldValid(meta) &&
-        <small className="p-error">{ meta.error }</small>;
-
     const formBody = ({ handleSubmit }: FormRenderProps<Vehicle, Vehicle>) => <>
         <form onSubmit={ event => { void handleSubmit(event); } }>
             <Field
                 name="number"
-                render={ ({ input, meta }) => (
-                    <div className="field mt-4">
-                        <span className="p-float-label">
-                            <InputText
-                                id="number"
-                                { ...input }
-                                autoFocus
-                                className={ classNames({
-                                    "p-invalid": isFormFieldValid(meta),
-                                }) }
-                                disabled={ action === "EditVehicle" }
-                            />
-                            <label
-                                htmlFor="number"
-                                className={ classNames({
-                                    "p-error": isFormFieldValid(meta),
-                                }) }
-                            >
-                                Number
-                            </label>
-                        </span>
-                        { getFormErrorMessage(meta) }
-                    </div>
-                ) }
+                render={ ({ input, meta }) =>
+                    <DialogFormField
+                        id="number"
+                        label="Number"
+                        meta={ meta }
+                        input={ input }
+                        disabled={ action === "EditVehicle" }
+                        autoFocus
+                    />
+                }
             />
 
             <Field
                 name="brand"
-                render={ ({ input, meta }) => (
-                    <div className="field mt-5">
-                        <span className="p-float-label">
-                            <InputText
-                                id="brand"
-                                { ...input }
-                                autoFocus
-                                className={ classNames({
-                                    "p-invalid": isFormFieldValid(meta),
-                                }) }
-                            />
-                            <label
-                                htmlFor="brand"
-                                className={ classNames({
-                                    "p-error": isFormFieldValid(meta),
-                                }) }
-                            >
-                                Brand
-                            </label>
-                        </span>
-                        { getFormErrorMessage(meta) }
-                    </div>
-                ) }
+                render={ ({ input, meta }) =>
+                    <DialogFormField
+                        id="brand"
+                        label="Brand"
+                        meta={ meta }
+                        input={ input }
+                        autoFocus
+                    />
+                }
             />
 
             <Field
                 name="model"
-                render={ ({ input, meta }) => (
-                    <div className="field mt-5">
-                        <span className="p-float-label">
-                            <InputText
-                                id="model"
-                                { ...input }
-                                autoFocus
-                                className={ classNames({
-                                    "p-invalid": isFormFieldValid(meta),
-                                }) }
-                            />
-                            <label
-                                htmlFor="model"
-                                className={ classNames({
-                                    "p-error": isFormFieldValid(meta),
-                                }) }
-                            >
-                                Model
-                            </label>
-                        </span>
-                        { getFormErrorMessage(meta) }
-                    </div>
-                ) }
+                render={ ({ input, meta }) =>
+                    <DialogFormField
+                        id="model"
+                        label="Model"
+                        meta={ meta }
+                        input={ input }
+                        autoFocus
+                    />
+                }
             />
 
             <div className="flex mt-4 justify-content-end gap-4">
