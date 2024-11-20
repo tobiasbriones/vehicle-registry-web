@@ -3,8 +3,9 @@
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
 import "./Vehicles.css";
-import { AppError, ErrorInfo, isAppError } from "@common/app/app.error.ts";
+import { isAppError } from "@common/app/app.error.ts";
 import { valToString } from "@common/utils.ts";
+import { AppErrorPane } from "@components/app-error/AppErrorPane.tsx";
 import { LoadingPane } from "@components/loading/LoadingPane.tsx";
 import { FormApi } from "final-form";
 import { Button } from "primereact/button";
@@ -69,36 +70,10 @@ export function Vehicles() {
         </div>
     );
 
-    const renderError = (error: object) => {
-        const errorInfo = (info: ErrorInfo) =>
-            typeof info === "string"
-            ? <p className="my-0">{ info }</p>
-            : <pre
-                className="p-1 text-left text-color p-mt-2 p-p-2 p-bg-light overflow-auto"
-                style={ {
-                    border: "1px solid rgba(0, 0, 0, 0.1)",
-                    borderRadius: "0.25rem",
-                } }
-            >
-                    { valToString(info) }
-                </pre>;
-
-        const appError = ({ type, info }: AppError) => <>
-            <div>
-                <span className="error-color"><strong>{ type }</strong></span>
-            </div>
-
-            <div className="my-1">
-                { errorInfo((info)) }
-            </div>
-        </>;
-
-        return <>
-            { isAppError(error)
-              ? appError(error)
-              : <p className="error-color">{ valToString(error) }</p> }
-        </>;
-    };
+    const renderError = (error: object) =>
+        isAppError(error)
+        ? <AppErrorPane error={ error } />
+        : <p className="error-color">{ valToString(error) }</p>;
 
     const renderFooter = () => (
         <div className="table-header flex-column m-0 align-items-end">
