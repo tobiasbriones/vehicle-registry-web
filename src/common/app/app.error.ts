@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MIT
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
+import { valToString } from "@common/utils.ts";
+
 export type ErrorType
     = "InternalError"
     | "DuplicateError"
@@ -14,6 +16,15 @@ export type AppError = {
     type: ErrorType,
     info: ErrorInfo,
 }
+
+export type MessageOf<T> = {
+    message: string,
+    target: T,
+}
+
+export const messageOfToString = <T>(
+    { message, target }: MessageOf<T>,
+) => `${ message }: ${ valToString(target) }.`;
 
 const isNonNullObject = (obj: unknown) =>
     typeof obj === "object" && obj !== null;
