@@ -3,20 +3,33 @@
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
 import "./LoadingPane.css";
-import { LoadingIndicator } from "./LoadingIndicator.tsx";
+import { objToString } from "@common/utils.ts";
+import { ReactNode } from "react";
 import { LoadingContent } from "./loading-content.ts";
+import { LoadingIndicator } from "./LoadingIndicator.tsx";
 
 type LoadingPaneProps = {
     content: LoadingContent,
+    renderError?: (info: object) => ReactNode,
 }
 
-export function LoadingPane({ content }: LoadingPaneProps) {
-    const { type, message } = content;
+export function LoadingPane({ content, renderError }: LoadingPaneProps) {
+    const { type, info } = content;
+
+    const errorFromObject = (error: object) =>
+        renderError !== undefined
+        ? renderError(error)
+        : <>{ objToString(error) }</>;
+
+    const error =
+        typeof info === "string"
+        ? <p className="error-color">{ info }</p>
+        : errorFromObject(info);
 
     return <>
         <LoadingIndicator
             show={ type === "Loading" }
-            message={ message }
+            message={ typeof info === "string" ? info : JSON.stringify(info) }
         />
 
         <div
@@ -24,7 +37,7 @@ export function LoadingPane({ content }: LoadingPaneProps) {
                 `error ${ type === "Error" ? "" : "opacity-0" }`
             }
         >
-            { message }
+            { error }
         </div>
     </>;
 }

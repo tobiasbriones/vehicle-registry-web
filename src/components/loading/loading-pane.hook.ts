@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
+import { valToString } from "@common/utils.ts";
 import { useCallback, useState } from "react";
 import { noneLoadingContent } from "./loading-content.ts";
 
@@ -10,16 +11,19 @@ export function useLoadingPane() {
 
     const setLoading = useCallback(
         (message: string) => {
-            setLoadingContent({ type: "Loading", message });
+            setLoadingContent({ type: "Loading", info: message });
         },
         [],
     );
 
     const setError = useCallback(
         (error: unknown) => {
+            const isObject = typeof error === "object" && error !== null;
+            const errorVal = isObject ? error : valToString(error);
+
             setLoadingContent({
                 type: "Error",
-                message: String(error),
+                info: errorVal,
             });
         },
         [],
