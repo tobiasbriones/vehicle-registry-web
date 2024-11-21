@@ -36,7 +36,24 @@
     backdrop-filter: blur(8px);
 }
 
+.p-menubar-start {
+    display: flex;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 @media (min-width: 960px) {
+    .custom-menubar {
+        justify-content: center;
+    }
+
+    .p-menubar-start {
+        position: relative;
+        left: 0;
+        transform: none;
+    }
+
     .p-menuitem-text {
         color: var(--primary-color-text, #ffffff);
     }
