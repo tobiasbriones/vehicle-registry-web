@@ -4,6 +4,7 @@
 
 import { Footer } from "@app/footer/Footer.tsx";
 import { Nav } from "@app/nav/Nav.tsx";
+import { PrimeReactProvider } from "primereact/api";
 import { ReactNode } from "react";
 
 type LayoutProps = {
@@ -11,14 +12,20 @@ type LayoutProps = {
 }
 
 function Layout({ children }: LayoutProps) {
+    const value = {
+        ripple: true,
+    };
+
     return <>
-        <Nav />
+        <PrimeReactProvider value={ value }>
+            <Nav />
 
-        <div style={ { marginTop: "var(--nav-height)" } }>
-            { children }
-        </div>
+            <div style={ { marginTop: "var(--nav-height)" } }>
+                { children }
+            </div>
 
-        <Footer />
+            <Footer />
+        </PrimeReactProvider>
     </>;
 }
 
