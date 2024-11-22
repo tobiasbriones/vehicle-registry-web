@@ -43,6 +43,26 @@
     transform: translateX(-50%);
 }
 
+/* Remove the light background on focus */
+.p-menuitem:focus, .p-focus {
+    background-color: transparent; /* Or use your desired background color */
+    outline: none; /* Remove the default focus outline */
+}
+
+/* Optional: Keep hover styles for interactivity */
+.p-menuitem:hover, .p-focus {
+    background-color: var(--primary-hover-color); /* Define your custom hover color */
+}
+
+.p-menuitem[data-p-focused="true"] {
+    background-color: transparent; /* Customize background */
+    outline: none; /* Optional: Remove focus outline */
+}
+
+.p-menubar .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content {
+    background: none;
+}
+
 @media (min-width: 960px) {
     .custom-menubar {
         justify-content: center;
