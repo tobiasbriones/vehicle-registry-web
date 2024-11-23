@@ -5,7 +5,7 @@
 import { Button } from "primereact/button";
 import "@app/App.css";
 
-function App() {
+export function App() {
     return <>
         <div className="landing-page">
             <VehicleRegistry />
@@ -35,5 +35,3 @@ function VehicleRegistry() {
         </section>
     </>;
 }
-
-export default App;

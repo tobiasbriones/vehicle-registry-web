@@ -11,7 +11,7 @@ type LayoutProps = {
     children: ReactNode;
 }
 
-function Layout({ children }: LayoutProps) {
+export function Layout({ children }: LayoutProps) {
     const value = {
         ripple: true,
     };
@@ -28,5 +28,3 @@ function Layout({ children }: LayoutProps) {
         </PrimeReactProvider>
     </>;
 }
-
-export default Layout;
