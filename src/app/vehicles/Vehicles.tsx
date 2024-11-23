@@ -7,6 +7,12 @@ import { isAppError } from "@common/app/app.error.ts";
 import { valToString } from "@common/utils.ts";
 import { AppErrorPane } from "@components/app-error/AppErrorPane.tsx";
 import {
+    DeleteConfirmItem,
+} from "@components/crud/delete-confirm-dialog/delete-confirm-item.ts";
+import {
+    DeleteConfirmDialog,
+} from "@components/crud/delete-confirm-dialog/DeleteConfirmDialog.tsx";
+import {
     DialogFormField,
 } from "@components/crud/dialog-form-field/DialogFormField.tsx";
 import { LoadingPane } from "@components/loading/LoadingPane.tsx";
@@ -15,7 +21,7 @@ import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Field, Form, FormRenderProps } from "react-final-form";
 import { emptyVehicle, validateVehicle, Vehicle } from "./vehicle.ts";
 import { useVehicleDialog, useVehicleService } from "./vehicles.hook.ts";
@@ -47,6 +53,9 @@ export function Vehicles() {
         openEditVehicleDialog,
         hideDialog,
     } = useVehicleDialog();
+
+    const [ deleteConfirmItem, setConfirmDeleteItem ]
+        = useState<DeleteConfirmItem<Vehicle> | undefined>(undefined);
 
     const onSave = (vehicle: Vehicle, action: DialogAction) => {
         switch (action) {
@@ -95,7 +104,13 @@ export function Vehicles() {
             <Button
                 className="p-button-text p-button-danger mx-1 my-1"
                 icon="pi pi-trash"
-                onClick={ () => { deleteVehicle(rowData); } }
+                onClick={ () => {
+                    setConfirmDeleteItem({
+                        item: rowData,
+                        id: rowData.number,
+                        label: "vehicle",
+                    });
+                } }
             />
         </>
     );
@@ -124,6 +139,14 @@ export function Vehicles() {
                 onSave={ onSave }
                 onHide={ hideDialog }
                 selectedVehicle={ selectedVehicle }
+            />
+
+            <DeleteConfirmDialog
+                confirmItem={ deleteConfirmItem }
+                onDelete={ deleteVehicle }
+                onCancel={ () => {
+                    setConfirmDeleteItem(undefined);
+                } }
             />
         </div>
     </>;
