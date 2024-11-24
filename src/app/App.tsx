@@ -19,6 +19,13 @@ export function App() {
 }
 
 function VehicleRegistry() {
+    const scrollToNextSection = () => {
+        window.scrollTo({
+            top: window.innerHeight,
+            behavior: "smooth",
+        });
+    };
+
     return <>
         <section
             className="vehicle-registry flex flex-column align-items-center justify-content-center text-center"
@@ -38,6 +45,7 @@ function VehicleRegistry() {
             <Button
                 className="getting-started p-button-raised p-button-rounded p-button-primary"
                 label="Getting Started"
+                onClick={ scrollToNextSection }
             />
         </section>
     </>;
