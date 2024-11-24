@@ -10,26 +10,43 @@
 }
 
 .landing-page {
-    background-color: #242424;
+    width: 100%;
+    background-color: rgba(36, 36, 36, 0.4);
     color: #eaeaea;
     min-height: 100vh;
 }
 
+.bg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("assets/vehicle-registry.jpg");
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 .vehicle-registry {
     height: 100vh;
-    padding: 2rem;
+}
+
+.vehicle-registry > .text {
+    padding: 2rem 1rem;
+    background-color: rgba(36, 36, 36, 0.9);
+    border-radius: 1rem;
 }
 
 .vehicle-registry h1 {
-    font-size: 3rem;
+    font-size: 2rem;
     font-weight: bold;
-    color: #ffffff;
+    color: white;
     margin: 0;
 }
 
 .vehicle-registry p.description {
-    font-size: 1.2rem;
-    color: #cccccc;
+    font-size: 1rem;
+    color: white;
     max-width: 600px;
     margin-top: 1rem;
     line-height: 1.6;
@@ -40,6 +57,26 @@
     padding: 1rem 2rem;
     font-size: 1.1rem;
     font-weight: bold;
+}
+
+@media (min-width: 600px) {
+    .vehicle-registry > .text {
+        padding: 3rem;
+    }
+
+    .vehicle-registry h1 {
+        font-size: 3rem;
+    }
+
+    .vehicle-registry p.description {
+        font-size: 1.2rem;
+    }
+}
+
+@media (min-width: 960px) {
+    .vehicle-registry > .text {
+        padding: 4rem;
+    }
 }
 
 .key-features {

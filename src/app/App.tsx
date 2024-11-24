@@ -8,10 +8,12 @@ import "@app/App.css";
 
 export function App() {
     return <>
-        <div className="landing-page">
-            <VehicleRegistry />
+        <div className="bg">
+            <div className="landing-page">
+                <VehicleRegistry />
 
-            <KeyFeatures />
+                <KeyFeatures />
+            </div>
         </div>
     </>;
 }
@@ -21,15 +23,17 @@ function VehicleRegistry() {
         <section
             className="vehicle-registry flex flex-column align-items-center justify-content-center text-center"
         >
-            <h1>
-                Welcome to Vehicle Registry
-            </h1>
+            <div className="text">
+                <h1>
+                    Welcome to Vehicle Registry
+                </h1>
 
-            <p className="description">
-                A powerful, modern solution for managing vehicles,
-                drivers, and tracking real-time entry
-                and exit logs.
-            </p>
+                <p className="description">
+                    A powerful, modern solution for managing vehicles,
+                    drivers, and tracking real-time entry
+                    and exit logs.
+                </p>
+            </div>
 
             <Button
                 className="getting-started p-button-raised p-button-rounded p-button-primary"
