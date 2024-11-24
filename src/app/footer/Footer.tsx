@@ -8,7 +8,7 @@ import { Fragment } from "react";
 
 export const Footer = () => <>
     <footer
-        className="p-4"
+        className="px-4 py-6"
         style={ {
             backgroundColor: "#1c1c1e",
         } }
