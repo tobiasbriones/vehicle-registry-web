@@ -14,9 +14,11 @@ export type VehicleService = {
     deleteVehicle: (number: string) => Promise<void>;
 };
 
+const vehiclesUrl = `${ apiUrl }/vehicles`;
+
 export const newVehicleService = (): VehicleService => ({
     async addVehicle(vehicle: Vehicle) {
-        const response = await fetch(`${ apiUrl }/vehicles`, {
+        const response = await fetch(vehiclesUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -30,7 +32,7 @@ export const newVehicleService = (): VehicleService => ({
     },
 
     async getVehicleById(number: string) {
-        const response = await fetch(`${ apiUrl }/vehicles/${ number }`);
+        const response = await fetch(`${ vehiclesUrl }/${ number }`);
 
         await requireNoError(response);
 
@@ -47,9 +49,7 @@ export const newVehicleService = (): VehicleService => ({
             queryParams.append("page", page.toString());
         }
 
-        const baseEndpointUrl = `${ apiUrl }/vehicles`;
-
-        const url = `${ baseEndpointUrl }${
+        const url = `${ vehiclesUrl }${
             queryParams.toString()
             ? `?${ queryParams.toString() }`
             : ""
@@ -66,7 +66,7 @@ export const newVehicleService = (): VehicleService => ({
         const { number, ...vehicleUpdate } = vehicle;
 
         const response = await fetch(
-            `${ apiUrl }/vehicles/${ number }`,
+            `${ vehiclesUrl }/${ number }`,
             {
                 method: "PUT",
                 headers: {
@@ -82,7 +82,7 @@ export const newVehicleService = (): VehicleService => ({
     },
 
     async deleteVehicle(number: string) {
-        const response = await fetch(`${ apiUrl }/vehicles/${ number }`, {
+        const response = await fetch(`${ vehiclesUrl }/${ number }`, {
             method: "DELETE",
         });
 
