@@ -26,11 +26,21 @@ export const Nav = () => {
             command: () => { navigate("/vehicles"); },
         },
     ];
-
+    const start = (
+        <img
+            className="mx-4"
+            src="/vite.svg"
+            alt="Vehicle Registry"
+            height="32px"
+            style={ { cursor: "pointer" } }
+            onClick={ () => { navigate("/"); } }
+        />
+    );
     return (
         <Menubar
             className="custom-menubar"
             model={ items }
+            start={ start }
         />
     );
 };

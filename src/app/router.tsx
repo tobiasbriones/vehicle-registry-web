@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: MIT
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
-import NotFound from "@app/NotFound.tsx";
+import { App } from "@app/App.tsx";
+import { Layout } from "@app/Layout.tsx";
+import { NotFound } from "@app/NotFound.tsx";
 import { Vehicles } from "@app/vehicles/Vehicles.tsx";
 import { ReactNode } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import { RouteObject } from "react-router/dist/lib/context";
-import App from "./App.tsx";
-import Layout from "./Layout.tsx";
 
 function layoutOf(node: ReactNode) {
     return <>

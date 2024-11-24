@@ -2,8 +2,11 @@
 // SPDX-License-Identifier: MIT
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
-import App from "@app/App.tsx";
+import { App } from "@app/App.tsx";
 import { render, screen } from "@testing-library/react";
+
+// TODO There's a cryptic JSDOM bug that shows an error log when running
+// TODO tests: https://github.com/primefaces/primereact/issues/5156
 
 describe("App tests", () => {
     it("should render the title", () => {
@@ -13,6 +16,6 @@ describe("App tests", () => {
             screen.getByRole("heading", {
                 level: 1,
             }),
-        ).toHaveTextContent("Vite + React");
+        ).toHaveTextContent("Welcome to Vehicle Registry");
     });
 });

@@ -36,6 +36,7 @@ export function DialogFormField(
                 className={ classNames({
                     "p-invalid": isFormFieldValid(meta),
                 }) }
+                style={ { width: "100%" } }
             />
             <label
                 htmlFor={ id }

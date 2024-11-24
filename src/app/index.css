@@ -86,3 +86,15 @@ button:focus-visible {
         background-color: #f9f9f9;
     }
 }
+
+/* # Style for Tuning PrimeReact # */
+
+/* Table pagination buttons with visible text color */
+button.p-paginator-page {
+    color: #c0c0c0;
+}
+
+button.p-paginator-page.p-highlight {
+    color: white;
+    font-weight: bold;
+}
