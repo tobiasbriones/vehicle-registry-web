@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
+import { apiUrl } from "@/config.ts";
 import { requireNoError } from "@app/error.ts";
 import { Vehicle } from "./vehicle.ts";
 
@@ -12,10 +13,6 @@ export type VehicleService = {
     updateVehicle: (vehicle: Vehicle) => Promise<Vehicle>;
     deleteVehicle: (number: string) => Promise<void>;
 };
-
-const API_HOSTNAME_ANY: unknown = import.meta.env.VITE_API_HOSTNAME ?? "";
-const API_HOSTNAME = String(API_HOSTNAME_ANY);
-const apiUrl = `https://${ API_HOSTNAME }`;
 
 export const newVehicleService = (): VehicleService => ({
     async addVehicle(vehicle: Vehicle) {
