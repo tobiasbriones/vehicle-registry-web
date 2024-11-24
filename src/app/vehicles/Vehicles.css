@@ -41,7 +41,7 @@
 
 .vehicles-dialog label {
     display: inline-block;
-    width: 5rem;
+    width: 100%;
 }
 
 tr > td > button.p-button-icon-only {
