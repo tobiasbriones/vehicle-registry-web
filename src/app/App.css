@@ -92,6 +92,7 @@ h2 {
 }
 
 .key-features > .container,
+.benefits > .container,
 .benefits > .container {
     margin: 0 auto;
 }
@@ -120,5 +121,18 @@ h2 {
 .benefits > .container .p-card i {
     margin-bottom: 1rem;
     font-size: 2rem;
+    color: #007ad9;
+}
+
+.cta {
+    padding: 2rem;
+    margin: 12rem 0;
+    background-color: #007ad9;
+    color: white;
+}
+
+.cta > .p-button {
+    padding: 1rem 2rem;
+    background-color: white;
     color: #007ad9;
 }
