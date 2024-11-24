@@ -209,7 +209,7 @@ function EditVehicleForm(
         selectedVehicle,
     }: EditVehicleFormProps,
 ) {
-    const onSubmit = (
+    const handleSubmit = (
         formVehicle: Vehicle,
         form: FormApi<Vehicle, Vehicle>,
     ) => {
@@ -281,7 +281,7 @@ function EditVehicleForm(
         <Form
             validate={ validateVehicle }
             initialValues={ selectedVehicle ?? emptyVehicle }
-            onSubmit={ onSubmit }
+            onSubmit={ handleSubmit }
             render={ formBody }
         />
     </>;
