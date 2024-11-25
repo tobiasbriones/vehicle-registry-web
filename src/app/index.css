@@ -98,3 +98,98 @@ button.p-paginator-page.p-highlight {
     color: white;
     font-weight: bold;
 }
+
+/* CRUD styles */
+.crud h2 {
+    color: #495057;
+}
+
+.crud > .p-datatable {
+    background-color: white;
+    border-radius: 0.5rem;
+}
+
+.crud .p-datatable > .p-datatable-footer {
+    background-color: white;
+    border-radius: 0.5rem;
+}
+
+.crud .p-datatable-header,
+.crud table > tbody > tr {
+    background: none;
+    border: none;
+}
+
+.crud > .p-datatable > .p-datatable-header,
+.crud table > tbody > tr > td,
+.crud table > thead > tr > th {
+    padding: 0.5rem 1rem;
+}
+
+.crud .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.crud .p-field {
+    margin-top: 1rem;
+}
+
+.crud-edit-dialog label {
+    display: inline-block;
+    width: 100%;
+}
+
+.crud tr > td > button.p-button-icon-only {
+    padding: 0.25rem;
+}
+
+.crud tr > td > button.p-button-icon-only > span.p-button-icon {
+    font-size: 0.75rem;
+}
+
+.crud table > tbody > tr > td {
+    font-size: 0.625rem;
+}
+
+@media (min-width: 600px) {
+    .crud table > tbody > tr > td {
+        font-size: 0.75rem;
+    }
+}
+
+@media (min-width: 960px) {
+    .crud table > tbody > tr > td {
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 960px) {
+    .crud {
+        width: 70%;
+        padding: 2rem;
+        margin: auto;
+    }
+
+    .crud > .p-datatable > .p-datatable-header,
+    .crud table > tbody > tr > td,
+    .crud table > thead > tr > th {
+        padding: 0.5rem 2rem;
+    }
+
+    .crud tr > td > button.p-button-icon-only {
+        padding: 0.5rem;
+    }
+
+    .crud tr > td > button.p-button-icon-only > span.p-button-icon {
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 1600px) {
+    .crud {
+        width: 60%;
+    }
+}

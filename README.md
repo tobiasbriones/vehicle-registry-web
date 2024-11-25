@@ -59,6 +59,60 @@ The web app is deployed at
 [Vehicle Registry \| Dev \| MathSoftware.Engineer](https://vehicle-registry.dev.mathsoftware.engineer)
 via Netlify.
 
+## Screenshots
+
+Vehicle Registry is a modern web app with responsive styles for mobile, desktop,
+and other devices.
+
+### Landing Page
+
+It presents the product with a landing page featuring a parallax background and
+modern navigation bar with blur translucent background.
+
+![](docs/screenshots/landing-page.png)
+
+The CTA (Call to Action) section leads the user to the main feature of the
+application.
+
+![](docs/screenshots/landing-page-cta.png)
+
+It features a footer section with all the detailed links and information.
+
+![](docs/screenshots/landing-page-footer.png)
+
+### CRUD
+
+It implements reliable CRUD (Create Read Update Delete) operations to define and
+manage domain data.
+
+**Vehicles CRUD**
+
+![](docs/screenshots/vehicles-crud.png)
+
+**Adding a New Vehicle with Validation**
+
+![](docs/screenshots/adding-a-new-vehicle-with-validation.png)
+
+**Editing Vehicles**
+
+![](docs/screenshots/editing-vehicles.png)
+
+**Robust Validation**
+
+![](docs/screenshots/robust-validation.png)
+
+**Delete Confirm Dialog**
+
+![](docs/screenshots/delete-confirm-dialog.png)
+
+**Drivers CRUD**
+
+![](docs/screenshots/drivers-crud.png)
+
+**Adding a New Driver with Validation**
+
+![](docs/screenshots/adding-a-new-driver-with-validation.png)
+
 ## Contact
 
 Tobias Briones: [GitHub](https://github.com/tobiasbriones)
