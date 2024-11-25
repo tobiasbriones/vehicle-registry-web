@@ -4,6 +4,7 @@
 
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
+import { KeyboardEventHandler } from "react";
 import { FieldInputProps, FieldMetaState } from "react-final-form";
 
 type FormFieldProps = {
@@ -25,6 +26,20 @@ export function DialogFormField(
         input,
     }: FormFieldProps,
 ) {
+    const handleKeyDown: KeyboardEventHandler = event => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+
+            const formElement = event.currentTarget.closest("form");
+
+            if (formElement) {
+                formElement.dispatchEvent(
+                    new Event("submit", { cancelable: true, bubbles: true }),
+                );
+            }
+        }
+    };
+
     return <>
         <div className="field mt-4">
         <span className="p-float-label">
@@ -37,6 +52,7 @@ export function DialogFormField(
                     "p-invalid": isFormFieldValid(meta),
                 }) }
                 style={ { width: "100%" } }
+                onKeyDown={ handleKeyDown }
             />
             <label
                 htmlFor={ id }
