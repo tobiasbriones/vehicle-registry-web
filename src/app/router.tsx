@@ -3,6 +3,7 @@
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
 import { App } from "@app/App.tsx";
+import { Drivers } from "@app/drivers/Drivers.tsx";
 import { Layout } from "@app/Layout.tsx";
 import { NotFound } from "@app/NotFound.tsx";
 import { Vehicles } from "@app/vehicles/Vehicles.tsx";
@@ -32,6 +33,10 @@ export const router = createBrowserRouter(
         {
             path: "/vehicles",
             element: <Vehicles />,
+        },
+        {
+            path: "/drivers",
+            element: <Drivers />,
         },
         {
             path: "*",

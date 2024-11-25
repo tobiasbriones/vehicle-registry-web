@@ -25,6 +25,11 @@ export const Nav = () => {
             icon: "pi pi-car",
             command: () => { navigate("/vehicles"); },
         },
+        {
+            label: "Drivers",
+            icon: "pi pi-user",
+            command: () => { navigate("/drivers"); },
+        },
     ];
     const start = (
         <img

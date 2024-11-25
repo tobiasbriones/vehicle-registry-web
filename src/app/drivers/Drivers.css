@@ -1,0 +1,81 @@
+/* Copyright (c) 2024 Tobias Briones. All rights reserved. */
+/* SPDX-License-Identifier: MIT */
+/* This file is part of https://github.com/tobiasbriones/vehicle-registry-web */
+
+.drivers-crud h2 {
+    color: #495057;
+}
+
+.drivers-crud > .p-datatable {
+    background-color: white;
+    border-radius: 0.5rem;
+}
+
+.drivers-crud .p-datatable > .p-datatable-footer {
+    background-color: white;
+    border-radius: 0.5rem;
+}
+
+.drivers-crud .p-datatable-header,
+.drivers-crud table > tbody > tr {
+    background: none;
+    border: none;
+}
+
+.drivers-crud > .p-datatable > .p-datatable-header,
+.drivers-crud table > tbody > tr > td,
+.drivers-crud table > thead > tr > th {
+    padding: 0.5rem;
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.p-field {
+    margin-top: 1rem;
+}
+
+.drivers-dialog label {
+    display: inline-block;
+    width: 100%;
+}
+
+tr > td > button.p-button-icon-only {
+    padding: 0.25rem;
+}
+
+tr > td > button.p-button-icon-only > span.p-button-icon {
+    font-size: 0.75rem;
+}
+
+@media (min-width: 960px) {
+    .drivers-crud {
+        width: 70%;
+        padding: 2rem;
+        margin: auto;
+    }
+
+    .drivers-crud > .p-datatable > .p-datatable-header,
+    .drivers-crud table > tbody > tr > td,
+    .drivers-crud table > thead > tr > th {
+        padding: 0.5rem 2rem;
+    }
+
+    tr > td > button.p-button-icon-only {
+        padding: 0.5rem;
+    }
+
+    tr > td > button.p-button-icon-only > span.p-button-icon {
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 1600px) {
+    .drivers-crud {
+        width: 60%;
+    }
+}
