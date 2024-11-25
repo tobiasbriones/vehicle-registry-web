@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
-import "./Drivers.css";
 import { isAppError } from "@common/app/app.error.ts";
 import { valToString } from "@common/utils.ts";
 import { AppErrorPane } from "@components/app-error/AppErrorPane.tsx";
@@ -119,7 +118,7 @@ export function Drivers() {
     useEffect(fetchDrivers, [ fetchDrivers ]);
 
     return <>
-        <div className="drivers-crud">
+        <div className="crud">
             <DataTable
                 value={ drivers }
                 header={ renderHeader() }
@@ -182,7 +181,7 @@ function EditDriverDialog(
 ) {
     return <>
         <Dialog
-            className="drivers-dialog"
+            className="crud-edit-dialog"
             visible={ visible }
             onHide={ onHide }
             closeIcon="pi pi-times"

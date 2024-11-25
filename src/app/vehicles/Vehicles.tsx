@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
-import "./Vehicles.css";
 import { isAppError } from "@common/app/app.error.ts";
 import { valToString } from "@common/utils.ts";
 import { AppErrorPane } from "@components/app-error/AppErrorPane.tsx";
@@ -119,7 +118,7 @@ export function Vehicles() {
     useEffect(fetchVehicles, [ fetchVehicles ]);
 
     return <>
-        <div className="vehicles-crud">
+        <div className="crud">
             <DataTable
                 value={ vehicles }
                 header={ renderHeader() }
@@ -179,7 +178,7 @@ function EditVehicleDialog(
 ) {
     return <>
         <Dialog
-            className="vehicles-dialog"
+            className="crud-edit-dialog"
             visible={ visible }
             onHide={ onHide }
             closeIcon="pi pi-times"
