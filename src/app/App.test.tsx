@@ -4,13 +4,14 @@
 
 import { App } from "@app/App.tsx";
 import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 
 // TODO There's a cryptic JSDOM bug that shows an error log when running
 // TODO tests: https://github.com/primefaces/primereact/issues/5156
 
 describe("App tests", () => {
     it("should render the title", () => {
-        render(<App />);
+        render(<MemoryRouter><App /></MemoryRouter>);
 
         expect(
             screen.getByRole("heading", {
