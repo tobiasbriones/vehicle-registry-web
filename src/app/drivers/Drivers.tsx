@@ -71,8 +71,9 @@ export function Drivers() {
 
     const renderHeader = () => (
         <div className="table-header flex-column sm:flex-row m-0">
-            <h2>Drivers</h2>
+            <h2 className="my-2 sm:my-4">Drivers</h2>
             <Button
+                className="mb-2 sm:mb-0"
                 label="Add Driver"
                 icon="pi pi-plus"
                 onClick={ openNewDriverDialog }

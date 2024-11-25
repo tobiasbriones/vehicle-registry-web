@@ -71,8 +71,9 @@ export function Vehicles() {
 
     const renderHeader = () => (
         <div className="table-header flex-column sm:flex-row m-0">
-            <h2>Vehicles</h2>
+            <h2 className="my-2 sm:my-4">Vehicles</h2>
             <Button
+                className="mb-2 sm:mb-0"
                 label="Add Vehicle"
                 icon="pi pi-plus"
                 onClick={ openNewVehicleDialog }

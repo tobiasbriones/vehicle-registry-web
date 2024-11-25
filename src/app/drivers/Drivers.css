@@ -25,7 +25,7 @@
 .drivers-crud > .p-datatable > .p-datatable-header,
 .drivers-crud table > tbody > tr > td,
 .drivers-crud table > thead > tr > th {
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
 }
 
 .table-header {
@@ -50,6 +50,22 @@ tr > td > button.p-button-icon-only {
 
 tr > td > button.p-button-icon-only > span.p-button-icon {
     font-size: 0.75rem;
+}
+
+.vehicles-crud table > tbody > tr > td {
+    font-size: 0.625rem;
+}
+
+@media (min-width: 600px) {
+    .vehicles-crud table > tbody > tr > td {
+        font-size: 0.75rem;
+    }
+}
+
+@media (min-width: 960px) {
+    .vehicles-crud table > tbody > tr > td {
+        font-size: 1rem;
+    }
 }
 
 @media (min-width: 960px) {
