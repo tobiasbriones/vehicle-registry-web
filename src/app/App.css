@@ -1,0 +1,138 @@
+/* Copyright (c) 2024 Tobias Briones. All rights reserved. */
+/* SPDX-License-Identifier: MIT */
+/* This file is part of https://github.com/tobiasbriones/vehicle-registry-web */
+
+#root {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    text-align: center;
+    color: #eaeaea;
+}
+
+.landing-page {
+    width: 100%;
+    background-color: rgba(36, 36, 36, 0.4);
+    color: #eaeaea;
+    min-height: 100vh;
+}
+
+.bg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("assets/vehicle-registry.jpg");
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.vehicle-registry {
+    height: 100vh;
+}
+
+.vehicle-registry > .text {
+    padding: 2rem 1rem;
+    background-color: rgba(36, 36, 36, 0.9);
+    border-radius: 1rem;
+}
+
+.vehicle-registry h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+}
+
+.vehicle-registry p.description {
+    font-size: 1rem;
+    color: white;
+    max-width: 600px;
+    margin-top: 1rem;
+    line-height: 1.6;
+}
+
+.vehicle-registry button.getting-started {
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+@media (min-width: 600px) {
+    .vehicle-registry > .text {
+        padding: 3rem;
+    }
+
+    .vehicle-registry h1 {
+        font-size: 3rem;
+    }
+
+    .vehicle-registry p.description {
+        font-size: 1.2rem;
+    }
+}
+
+@media (min-width: 960px) {
+    .vehicle-registry > .text {
+        padding: 4rem;
+    }
+}
+
+.key-features {
+    padding: 4rem 2rem;
+    background-color: #1f1f1f;
+}
+
+.key-features > .container,
+.benefits > .container,
+.benefits > .container {
+    margin: 0 auto;
+}
+
+@media (min-width: 1080px) {
+    .key-features > .container,
+    .benefits > .container {
+        width: 60%;
+    }
+}
+
+.key-features > .container .p-card,
+.benefits > .container .p-card {
+    background-color: #333333;
+    color: #eaeaea;
+    border: 1px solid #444444;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.benefits {
+    padding: 4rem 2rem;
+    background-color: #242424;
+}
+
+.benefits > .container .p-card i {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    color: #007ad9;
+}
+
+.cta {
+    padding: 2rem;
+    margin: 12rem 0;
+    background-color: #007ad9;
+    color: white;
+}
+
+.cta > .p-button {
+    padding: 1rem 2rem;
+    background-color: white;
+    color: #007ad9;
+}

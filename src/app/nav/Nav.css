@@ -1,0 +1,84 @@
+/* Copyright (c) 2024 Tobias Briones. All rights reserved. */
+/* SPDX-License-Identifier: MIT */
+/* This file is part of https://github.com/tobiasbriones/vehicle-registry-web */
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+}
+
+.nav-logo .p-button {
+    margin-right: 0.5rem;
+}
+
+.nav-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-right: 2rem;
+    color: var(--primary-color-text, #ffffff);
+}
+
+.p-menuitem-icon {
+    color: var(--indigo-200, #ffffff);
+}
+
+.custom-menubar {
+    position: fixed;
+    width: calc(100% - var(--scrollbar-width, 0px));
+    height: var(--nav-height);
+    left: 0;
+    top: 0;
+    z-index: 4;
+    transition: background-color .5s, border-color .5s;
+    border: none;
+    border-bottom: 1px solid transparent;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+}
+
+.p-menubar-start {
+    display: flex;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Remove the light background on focus */
+.p-menuitem:focus, .p-focus {
+    background-color: transparent; /* Or use your desired background color */
+    outline: none; /* Remove the default focus outline */
+}
+
+/* Optional: Keep hover styles for interactivity */
+.p-menuitem:hover, .p-focus {
+    background-color: var(--primary-hover-color); /* Define your custom hover color */
+}
+
+.p-menuitem[data-p-focused="true"] {
+    background-color: transparent; /* Customize background */
+    outline: none; /* Optional: Remove focus outline */
+}
+
+.p-menubar .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content {
+    background: none;
+}
+
+@media (min-width: 960px) {
+    .custom-menubar {
+        justify-content: center;
+    }
+
+    .p-menubar-start {
+        position: relative;
+        left: 0;
+        transform: none;
+    }
+
+    .p-menuitem-text {
+        color: var(--primary-color-text, #ffffff);
+    }
+
+    .p-menuitem-content:hover {
+        background: rgba(255, 255, 255, 0.2) none;
+    }
+}
