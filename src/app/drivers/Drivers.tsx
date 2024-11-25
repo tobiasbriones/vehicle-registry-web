@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
-import "./Vehicles.css";
+import "./Drivers.css";
 import { isAppError } from "@common/app/app.error.ts";
 import { valToString } from "@common/utils.ts";
 import { AppErrorPane } from "@components/app-error/AppErrorPane.tsx";
@@ -23,47 +23,47 @@ import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { useEffect, useState } from "react";
 import { Field, Form, FormRenderProps } from "react-final-form";
-import { emptyVehicle, validateVehicle, Vehicle } from "./vehicle.ts";
-import { useVehicleDialog, useVehicleService } from "./vehicles.hook.ts";
+import {
+    Driver,
+    driverFullName,
+    replaceDriverEmptyFields,
+    validateDriver,
+} from "./driver.ts";
+import { useDriverDialog, useDriverService } from "./drivers.hook.ts";
 
-export function Vehicles() {
+export function Drivers() {
     const tableRowLimit = 5;
-
-    // Load 30 vehicles into the table maximum (the last ones added). If you
-    // want to show "older" vehicles you will have to enhance the pagination
-    // to support an unlimited amount of pages.
     const maxLimit = 30;
-
     const defPage = 1;
 
     const {
-        vehicles,
+        drivers,
         loadingContent,
-        fetchVehicles,
-        registerVehicle,
-        editVehicle,
-        deleteVehicle,
-    } = useVehicleService(maxLimit, defPage);
+        fetchDrivers,
+        registerDriver,
+        editDriver,
+        deleteDriver,
+    } = useDriverService(maxLimit, defPage);
 
     const {
         isDialogVisible,
         isEditing,
-        selectedVehicle,
-        openNewVehicleDialog,
-        openEditVehicleDialog,
+        selectedDriver,
+        openNewDriverDialog,
+        openEditDriverDialog,
         hideDialog,
-    } = useVehicleDialog();
+    } = useDriverDialog();
 
     const [ deleteConfirmItem, setConfirmDeleteItem ]
-        = useState<DeleteConfirmItem<Vehicle> | undefined>(undefined);
+        = useState<DeleteConfirmItem<Driver> | undefined>(undefined);
 
-    const onSave = (vehicle: Vehicle, action: DialogAction) => {
+    const onSave = (driver: Driver, action: DialogAction) => {
         switch (action) {
-            case "AddVehicle":
-                registerVehicle(vehicle);
+            case "AddDriver":
+                registerDriver(driver);
                 break;
-            case "EditVehicle":
-                editVehicle(vehicle);
+            case "EditDriver":
+                editDriver(driver);
                 break;
         }
         hideDialog();
@@ -71,11 +71,11 @@ export function Vehicles() {
 
     const renderHeader = () => (
         <div className="table-header flex-column sm:flex-row m-0">
-            <h2>Vehicles</h2>
+            <h2>Drivers</h2>
             <Button
-                label="Add Vehicle"
+                label="Add Driver"
                 icon="pi pi-plus"
-                onClick={ openNewVehicleDialog }
+                onClick={ openNewDriverDialog }
             />
         </div>
     );
@@ -94,12 +94,12 @@ export function Vehicles() {
         </div>
     );
 
-    const renderActionButtons = (rowData: Vehicle) => (
+    const renderActionButtons = (rowData: Driver) => (
         <>
             <Button
                 className="p-button-text mx-1 my-1"
                 icon="pi pi-pencil"
-                onClick={ () => { openEditVehicleDialog(rowData); } }
+                onClick={ () => { openEditDriverDialog(rowData); } }
             />
             <Button
                 className="p-button-text p-button-danger mx-1 my-1"
@@ -107,7 +107,7 @@ export function Vehicles() {
                 onClick={ () => {
                     setConfirmDeleteItem({
                         item: rowData,
-                        id: rowData.number,
+                        id: rowData.licenseId,
                         label: "vehicle",
                     });
                 } }
@@ -115,35 +115,38 @@ export function Vehicles() {
         </>
     );
 
-    useEffect(fetchVehicles, [ fetchVehicles ]);
+    useEffect(fetchDrivers, [ fetchDrivers ]);
 
     return <>
-        <div className="vehicles-crud">
+        <div className="drivers-crud">
             <DataTable
-                value={ vehicles }
+                value={ drivers }
                 header={ renderHeader() }
                 footer={ renderFooter() }
                 paginator
                 rows={ tableRowLimit }
                 rowsPerPageOptions={ [ 5, 10, 25, 50 ] }
             >
-                <Column field="number" header="Number" />
-                <Column field="brand" header="Brand" />
-                <Column field="model" header="Model" />
+                <Column field="licenseId" header="License ID" />
+                <Column
+                    className="uppercase"
+                    body={ driverFullName }
+                    header="Full Name"
+                />
                 <Column body={ renderActionButtons } header="Actions" />
             </DataTable>
 
-            <EditVehicleDialog
+            <EditDriverDialog
                 visible={ isDialogVisible }
-                action={ isEditing ? "EditVehicle" : "AddVehicle" }
+                action={ isEditing ? "EditDriver" : "AddDriver" }
                 onSave={ onSave }
                 onHide={ hideDialog }
-                selectedVehicle={ selectedVehicle }
+                selectedDriver={ selectedDriver }
             />
 
             <DeleteConfirmDialog
                 confirmItem={ deleteConfirmItem }
-                onDelete={ deleteVehicle }
+                onDelete={ deleteDriver }
                 onCancel={ () => {
                     setConfirmDeleteItem(undefined);
                 } }
@@ -152,110 +155,133 @@ export function Vehicles() {
     </>;
 }
 
-type DialogAction = "AddVehicle" | "EditVehicle";
+type DialogAction = "AddDriver" | "EditDriver";
 
 const actionToString = (action: DialogAction) => ({
-    "AddVehicle": "Add Vehicle",
-    "EditVehicle": "Edit Vehicle",
+    "AddDriver": "Add Driver",
+    "EditDriver": "Edit Driver",
 }[action]);
 
-type EditVehicleDialogProps = {
+type EditDriverDialogProps = {
     visible: boolean,
     action: DialogAction,
-    onSave: (vehicle: Vehicle, action: DialogAction) => void,
+    onSave: (driver: Driver, action: DialogAction) => void,
     onHide: () => void,
-    selectedVehicle?: Vehicle | null,
+    selectedDriver?: Driver,
 }
 
-function EditVehicleDialog(
+function EditDriverDialog(
     {
         visible,
         action,
         onSave,
         onHide,
-        selectedVehicle,
-    }: EditVehicleDialogProps,
+        selectedDriver,
+    }: EditDriverDialogProps,
 ) {
     return <>
         <Dialog
-            className="vehicles-dialog"
+            className="drivers-dialog"
             visible={ visible }
             onHide={ onHide }
             closeIcon="pi pi-times"
             header={ actionToString(action) }
         >
-            <EditVehicleForm
+            <EditDriverForm
                 action={ action }
                 onSave={ onSave }
                 onCancel={ onHide }
-                selectedVehicle={ selectedVehicle }
+                selectedDriver={ selectedDriver }
             />
         </Dialog>
     </>;
 }
 
-type EditVehicleFormProps = {
+type EditDriverFormProps = {
     action: DialogAction,
-    onSave: (vehicle: Vehicle, action: DialogAction) => void,
+    onSave: (driver: Driver, action: DialogAction) => void,
     onCancel: () => void,
-    selectedVehicle?: Vehicle | null,
+    selectedDriver?: Driver,
 }
 
-function EditVehicleForm(
+function EditDriverForm(
     {
         action,
         onSave,
         onCancel,
-        selectedVehicle,
-    }: EditVehicleFormProps,
+        selectedDriver,
+    }: EditDriverFormProps,
 ) {
     const handleSubmit = (
-        formVehicle: Vehicle,
-        form: FormApi<Vehicle, Vehicle>,
+        formDriver: Driver,
+        form: FormApi<Driver, Driver>,
     ) => {
-        onSave(formVehicle, action);
+        onSave(formDriver, action);
 
         form.restart();
     };
 
-    const formBody = ({ handleSubmit }: FormRenderProps<Vehicle, Vehicle>) => <>
-        <form onSubmit={ event => { void handleSubmit(event); } }>
+    const formBody = ({ handleSubmit }: FormRenderProps<Driver, Driver>) => <>
+        <form
+            onSubmit={ event => { void handleSubmit(event); } }
+        >
             <Field
-                name="number"
+                name="licenseId"
                 render={ ({ input, meta }) =>
                     <DialogFormField
-                        id="number"
-                        label="Number"
+                        id="licenseId"
+                        label="License ID"
                         meta={ meta }
                         input={ input }
-                        disabled={ action === "EditVehicle" }
-                        autoFocus
+                        disabled={ action === "EditDriver" }
                     />
                 }
             />
 
             <Field
-                name="brand"
+                name="firstName"
                 render={ ({ input, meta }) =>
                     <DialogFormField
-                        id="brand"
-                        label="Brand"
+                        id="firstName"
+                        label="First Name"
                         meta={ meta }
                         input={ input }
-                        autoFocus
                     />
                 }
             />
 
             <Field
-                name="model"
+                name="secondName"
                 render={ ({ input, meta }) =>
                     <DialogFormField
-                        id="model"
-                        label="Model"
+                        id="secondName"
+                        label="Second Name"
                         meta={ meta }
                         input={ input }
-                        autoFocus
+                    />
+                }
+            />
+
+            <Field
+                name="surname"
+                render={ ({ input, meta }) =>
+                    <DialogFormField
+                        id="surname"
+                        label="Surname"
+                        meta={ meta }
+                        input={ input }
+                    />
+                }
+            />
+
+            <Field
+                name="secondSurname"
+                render={ ({ input, meta }) =>
+                    <DialogFormField
+                        id="secondSurname"
+                        label="Second Surname"
+                        meta={ meta }
+                        input={ input }
                     />
                 }
             />
@@ -271,7 +297,7 @@ function EditVehicleForm(
                     type="submit"
                     label="Save"
                     icon="pi pi-check"
-                    autoFocus
+                    autoFocus={ true }
                 />
             </div>
         </form>
@@ -279,8 +305,8 @@ function EditVehicleForm(
 
     return <>
         <Form
-            validate={ validateVehicle }
-            initialValues={ selectedVehicle ?? emptyVehicle }
+            validate={ validateDriver }
+            initialValues={ replaceDriverEmptyFields(selectedDriver) }
             onSubmit={ handleSubmit }
             render={ formBody }
         />

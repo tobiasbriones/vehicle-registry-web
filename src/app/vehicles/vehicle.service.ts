@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
+import { apiUrl } from "@/config.ts";
 import { requireNoError } from "@app/error.ts";
 import { Vehicle } from "./vehicle.ts";
 
@@ -13,13 +14,11 @@ export type VehicleService = {
     deleteVehicle: (number: string) => Promise<void>;
 };
 
-const API_HOSTNAME_ANY: unknown = import.meta.env.VITE_API_HOSTNAME ?? "";
-const API_HOSTNAME = String(API_HOSTNAME_ANY);
-const apiUrl = `https://${ API_HOSTNAME }`;
+const vehiclesUrl = `${ apiUrl }/vehicles`;
 
 export const newVehicleService = (): VehicleService => ({
     async addVehicle(vehicle: Vehicle) {
-        const response = await fetch(`${ apiUrl }/vehicles`, {
+        const response = await fetch(vehiclesUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -33,7 +32,7 @@ export const newVehicleService = (): VehicleService => ({
     },
 
     async getVehicleById(number: string) {
-        const response = await fetch(`${ apiUrl }/vehicles/${ number }`);
+        const response = await fetch(`${ vehiclesUrl }/${ number }`);
 
         await requireNoError(response);
 
@@ -50,9 +49,7 @@ export const newVehicleService = (): VehicleService => ({
             queryParams.append("page", page.toString());
         }
 
-        const baseEndpointUrl = `${ apiUrl }/vehicles`;
-
-        const url = `${ baseEndpointUrl }${
+        const url = `${ vehiclesUrl }${
             queryParams.toString()
             ? `?${ queryParams.toString() }`
             : ""
@@ -69,7 +66,7 @@ export const newVehicleService = (): VehicleService => ({
         const { number, ...vehicleUpdate } = vehicle;
 
         const response = await fetch(
-            `${ apiUrl }/vehicles/${ number }`,
+            `${ vehiclesUrl }/${ number }`,
             {
                 method: "PUT",
                 headers: {
@@ -85,7 +82,7 @@ export const newVehicleService = (): VehicleService => ({
     },
 
     async deleteVehicle(number: string) {
-        const response = await fetch(`${ apiUrl }/vehicles/${ number }`, {
+        const response = await fetch(`${ vehiclesUrl }/${ number }`, {
             method: "DELETE",
         });
 

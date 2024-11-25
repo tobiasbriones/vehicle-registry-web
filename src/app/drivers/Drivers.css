@@ -2,29 +2,29 @@
 /* SPDX-License-Identifier: MIT */
 /* This file is part of https://github.com/tobiasbriones/vehicle-registry-web */
 
-.vehicles-crud h2 {
+.drivers-crud h2 {
     color: #495057;
 }
 
-.vehicles-crud > .p-datatable {
+.drivers-crud > .p-datatable {
     background-color: white;
     border-radius: 0.5rem;
 }
 
-.vehicles-crud .p-datatable > .p-datatable-footer {
+.drivers-crud .p-datatable > .p-datatable-footer {
     background-color: white;
     border-radius: 0.5rem;
 }
 
-.vehicles-crud .p-datatable-header,
-.vehicles-crud table > tbody > tr {
+.drivers-crud .p-datatable-header,
+.drivers-crud table > tbody > tr {
     background: none;
     border: none;
 }
 
-.vehicles-crud > .p-datatable > .p-datatable-header,
-.vehicles-crud table > tbody > tr > td,
-.vehicles-crud table > thead > tr > th {
+.drivers-crud > .p-datatable > .p-datatable-header,
+.drivers-crud table > tbody > tr > td,
+.drivers-crud table > thead > tr > th {
     padding: 0.5rem;
 }
 
@@ -39,7 +39,7 @@
     margin-top: 1rem;
 }
 
-.vehicles-dialog label {
+.drivers-dialog label {
     display: inline-block;
     width: 100%;
 }
@@ -53,15 +53,15 @@ tr > td > button.p-button-icon-only > span.p-button-icon {
 }
 
 @media (min-width: 960px) {
-    .vehicles-crud {
+    .drivers-crud {
         width: 70%;
         padding: 2rem;
         margin: auto;
     }
 
-    .vehicles-crud > .p-datatable > .p-datatable-header,
-    .vehicles-crud table > tbody > tr > td,
-    .vehicles-crud table > thead > tr > th {
+    .drivers-crud > .p-datatable > .p-datatable-header,
+    .drivers-crud table > tbody > tr > td,
+    .drivers-crud table > thead > tr > th {
         padding: 0.5rem 2rem;
     }
 
@@ -75,7 +75,7 @@ tr > td > button.p-button-icon-only > span.p-button-icon {
 }
 
 @media (min-width: 1600px) {
-    .vehicles-crud {
+    .drivers-crud {
         width: 60%;
     }
 }
