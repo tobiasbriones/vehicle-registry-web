@@ -80,6 +80,39 @@ It features a footer section with all the detailed links and information.
 
 ![](docs/screenshots/landing-page-footer.png)
 
+### CRUD
+
+It implements reliable CRUD (Create Read Update Delete) operations to define and
+manage domain data.
+
+**Vehicles CRUD**
+
+![](docs/screenshots/vehicles-crud.png)
+
+**Adding a New Vehicle with Validation**
+
+![](docs/screenshots/adding-a-new-vehicle-with-validation.png)
+
+**Editing Vehicles**
+
+![](docs/screenshots/editing-vehicles.png)
+
+**Robust Validation**
+
+![](docs/screenshots/robust-validation.png)
+
+**Delete Confirm Dialog**
+
+![](docs/screenshots/delete-confirm-dialog.png)
+
+**Drivers CRUD**
+
+![](docs/screenshots/drivers-crud.png)
+
+**Adding a New Driver with Validation**
+
+![](docs/screenshots/adding-a-new-driver-with-validation.png)
+
 ## Contact
 
 Tobias Briones: [GitHub](https://github.com/tobiasbriones)
