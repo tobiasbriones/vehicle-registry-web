@@ -59,6 +59,11 @@ The web app is deployed at
 [Vehicle Registry \| Dev \| MathSoftware.Engineer](https://vehicle-registry.dev.mathsoftware.engineer)
 via Netlify.
 
+## Screenshots
+
+Vehicle Registry is a modern web app with responsive styles for mobile, desktop,
+and other devices.
+
 ## Contact
 
 Tobias Briones: [GitHub](https://github.com/tobiasbriones)
