@@ -152,13 +152,15 @@ function Cta() {
                 className="p-button-raised p-button-rounded"
             >
                 <Link
-                    to="/access" style={ {
-                    position: "absolute",
-                    width: "100%",
-                    height: "100%",
-                    left: 0,
-                    top: 0,
-                } }
+                    to="/logs"
+                    style={ {
+                        position: "absolute",
+                        width: "100%",
+                        height: "100%",
+                        left: 0,
+                        top: 0,
+                        zIndex: "2",
+                    } }
                 />
             </Button>
         </section>

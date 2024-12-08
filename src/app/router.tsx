@@ -6,6 +6,7 @@ import { App } from "@app/App.tsx";
 import { Drivers } from "@app/drivers/Drivers.tsx";
 import { Layout } from "@app/Layout.tsx";
 import { NotFound } from "@app/NotFound.tsx";
+import { VehicleLogs } from "@app/vehicle-logs/VehicleLogs.tsx";
 import { Vehicles } from "@app/vehicles/Vehicles.tsx";
 import { ReactNode } from "react";
 import { createBrowserRouter } from "react-router-dom";
@@ -37,6 +38,10 @@ export const router = createBrowserRouter(
         {
             path: "/drivers",
             element: <Drivers />,
+        },
+        {
+            path: "/logs",
+            element: <VehicleLogs />,
         },
         {
             path: "*",
