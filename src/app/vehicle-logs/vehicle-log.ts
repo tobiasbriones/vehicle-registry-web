@@ -67,7 +67,6 @@ export const validateVehicleLogCreate = (formVehicleLog: VehicleLogFormCreateBod
     return errors;
 };
 
-
 export type VehicleLogUpdateBody = {
     id: number,
     logType: VehicleLogType;
