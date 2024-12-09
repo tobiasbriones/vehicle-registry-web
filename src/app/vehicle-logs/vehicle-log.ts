@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MIT
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
-import { Driver } from "@app/drivers/driver.ts";
-import { Vehicle } from "@app/vehicles/vehicle.ts";
+import { Driver, emptyDriver } from "@app/drivers/driver.ts";
+import { emptyVehicle, Vehicle } from "@app/vehicles/vehicle.ts";
 
 export type VehicleLogType = "entry" | "exit";
 
@@ -25,6 +25,48 @@ export type VehicleLogCreateBody = {
     logType: VehicleLogType;
     mileageInKilometers: number;
 }
+
+/**
+ * Defines the style the dialog will show before sending the request,
+ * allowing to show the high-level `Vehicle` and `Driver` records.
+ */
+export type VehicleLogFormCreateBody = {
+    vehicle: Vehicle,
+    driver: Driver,
+    logType: VehicleLogType;
+    mileageInKilometers: string;
+}
+
+export const emptyVehicleLogFormCreateBody: VehicleLogFormCreateBody = {
+    vehicle: emptyVehicle,
+    driver: emptyDriver,
+    logType: "entry",
+    mileageInKilometers: "0",
+};
+
+export const vehicleLogFormCreateBodyToApiBody = (
+    { vehicle, driver, logType, mileageInKilometers }: VehicleLogFormCreateBody,
+): VehicleLogCreateBody => ({
+    vehicleNumber: vehicle.number,
+    driverLicenseId: driver.licenseId,
+    logType,
+    mileageInKilometers: parseInt(mileageInKilometers),
+});
+
+export const validateVehicleLogCreate = (formVehicleLog: VehicleLogFormCreateBody) => {
+    const errors: Partial<{ vehicle: string, driver: string }> = {};
+
+    if (formVehicleLog.vehicle.number === "") {
+        errors.vehicle = "Vehicle is required.";
+    }
+
+    if (formVehicleLog.driver.licenseId === "") {
+        errors.driver = "Driver is required.";
+    }
+
+    return errors;
+};
+
 
 export type VehicleLogUpdateBody = {
     id: number,

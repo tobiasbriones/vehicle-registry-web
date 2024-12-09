@@ -3,15 +3,27 @@
 // This file is part of https://github.com/tobiasbriones/vehicle-registry-web
 
 import { driverFullName } from "@app/drivers/driver.ts";
+import {
+    useVehicleLogDataServices,
+} from "@app/vehicle-logs/vehicle-log-data.hook.ts";
+import { VehicleLogDialog } from "@app/vehicle-logs/VehicleLogDialog.tsx";
 import { isAppError } from "@common/app/app.error.ts";
 import { valToString } from "@common/utils.ts";
 import { AppErrorPane } from "@components/app-error/AppErrorPane.tsx";
 import { LoadingPane } from "@components/loading/LoadingPane.tsx";
+import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { useEffect } from "react";
-import { VehicleLog } from "./vehicle-log.ts";
-import { useVehicleLogService } from "./vehicle-logs.hook.ts";
+import {
+    VehicleLog,
+    VehicleLogCreateBody,
+    VehicleLogUpdateBody,
+} from "./vehicle-log.ts";
+import {
+    useVehicleLogDialog,
+    useVehicleLogService,
+} from "./vehicle-logs.hook.ts";
 
 export function VehicleLogs() {
     const tableRowLimit = 5;
@@ -22,11 +34,44 @@ export function VehicleLogs() {
         logs,
         loadingContent,
         fetchVehicleLogs,
+        registerVehicleLog,
+        setLoading,
+        stopLoading,
+        setError,
     } = useVehicleLogService(maxLimit, defPage);
+
+    const {
+        vehicles,
+        fetchVehicles,
+        drivers,
+        fetchDrivers,
+    } = useVehicleLogDataServices(setLoading, setError, stopLoading);
+
+    const {
+        isDialogVisible,
+        isEditing,
+        selectedVehicleLog,
+        openNewVehicleLogDialog,
+        hideDialog,
+    } = useVehicleLogDialog();
+
+    const onSave = (
+        log: VehicleLogCreateBody | VehicleLogUpdateBody,
+    ) => {
+        registerVehicleLog(log as VehicleLogCreateBody);
+
+        hideDialog();
+    };
 
     const renderHeader = () => (
         <div className="table-header flex-column sm:flex-row m-0">
             <h2 className="my-2 sm:my-4">Vehicle Logs</h2>
+            <Button
+                className="mb-2 sm:mb-0"
+                label="Add Log"
+                icon="pi pi-plus"
+                onClick={ openNewVehicleLogDialog }
+            />
         </div>
     );
 
@@ -45,6 +90,8 @@ export function VehicleLogs() {
     );
 
     useEffect(fetchVehicleLogs, [ fetchVehicleLogs ]);
+    useEffect(fetchVehicles, [ fetchVehicles ]);
+    useEffect(fetchDrivers, [ fetchDrivers ]);
 
     return <>
         <div className="crud">
@@ -74,6 +121,16 @@ export function VehicleLogs() {
 
                 <Column field="mileageInKilometers" header="Mileage (KMs)" />
             </DataTable>
+
+            <VehicleLogDialog
+                visible={ isDialogVisible }
+                action={ isEditing ? "EditVehicleLog" : "AddVehicleLog" }
+                vehicles={ vehicles }
+                drivers={ drivers }
+                onSave={ onSave }
+                onHide={ hideDialog }
+                selectedLog={ selectedVehicleLog }
+            />
         </div>
     </>;
 }

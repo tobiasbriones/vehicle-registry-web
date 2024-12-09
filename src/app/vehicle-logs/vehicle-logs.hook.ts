@@ -6,7 +6,10 @@ import {
     newVehicleLogService,
     ReadAllQueryParams,
 } from "@app/vehicle-logs/vehicle-log.service.ts";
-import { VehicleLog } from "@app/vehicle-logs/vehicle-log.ts";
+import {
+    VehicleLog,
+    VehicleLogCreateBody,
+} from "@app/vehicle-logs/vehicle-log.ts";
 import { useLoadingPane } from "@components/loading/loading-pane.hook.ts";
 import { useCallback, useMemo, useState } from "react";
 
@@ -39,12 +42,61 @@ export function useVehicleLogService(
             .catch(setErrorWithMessage(`Failed to fetch vehicle logs.`));
     }, [ filter, limit, page, service, setError, setLoading, stopLoading ]);
 
+    const registerVehicleLog = useCallback(
+        (log: VehicleLogCreateBody) => {
+            setLoading("Creating vehicle log...");
+
+            service
+                .addVehicleLog(log)
+                .then((res: VehicleLog) => {
+                    setLogs(prevVehicles => [ res, ...prevVehicles ]);
+                })
+                .then(stopLoading)
+                .catch(setError);
+        },
+        [ service, setError, setLoading, stopLoading ],
+    );
+
     return {
         logs,
         loadingContent,
         fetchVehicleLogs,
+        registerVehicleLog,
         setLoading,
         stopLoading,
         setError,
+    };
+}
+
+export function useVehicleLogDialog() {
+    const [ isDialogVisible, setIsDialogVisible ] = useState(false);
+    const [ isEditing, setIsEditing ] = useState(false);
+    const [ selectedVehicleLog, setSelectedVehicleLog ]
+        = useState<VehicleLog | null>(null);
+
+    const openNewVehicleLogDialog = () => {
+        setSelectedVehicleLog(null);
+        setIsEditing(false);
+        setIsDialogVisible(true);
+    };
+
+    const openEditVehicleLogDialog = (log: VehicleLog) => {
+        setSelectedVehicleLog(log);
+        setIsEditing(true);
+        setIsDialogVisible(true);
+    };
+
+    const hideDialog = () => {
+        setIsDialogVisible(false);
+        setSelectedVehicleLog(null);
+    };
+
+    return {
+        isDialogVisible,
+        isEditing,
+        selectedVehicleLog,
+        openNewVehicleLogDialog,
+        openEditVehicleLogDialog,
+        hideDialog,
     };
 }
