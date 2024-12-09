@@ -6,7 +6,10 @@ import { driverFullName } from "@app/drivers/driver.ts";
 import {
     useVehicleLogDataServices,
 } from "@app/vehicle-logs/vehicle-log-data.hook.ts";
-import { VehicleLogDialog } from "@app/vehicle-logs/VehicleLogDialog.tsx";
+import {
+    DialogAction,
+    VehicleLogDialog,
+} from "@app/vehicle-logs/VehicleLogDialog.tsx";
 import { isAppError } from "@common/app/app.error.ts";
 import { valToString } from "@common/utils.ts";
 import { AppErrorPane } from "@components/app-error/AppErrorPane.tsx";
@@ -41,6 +44,7 @@ export function VehicleLogs() {
         loadingContent,
         fetchVehicleLogs,
         registerVehicleLog,
+        editVehicleLog,
         deleteVehicleLog,
         setLoading,
         stopLoading,
@@ -59,6 +63,7 @@ export function VehicleLogs() {
         isEditing,
         selectedVehicleLog,
         openNewVehicleLogDialog,
+        openEditVehicleLogDialog,
         hideDialog,
     } = useVehicleLogDialog();
 
@@ -67,9 +72,16 @@ export function VehicleLogs() {
 
     const onSave = (
         log: VehicleLogCreateBody | VehicleLogUpdateBody,
+        action: DialogAction,
     ) => {
-        registerVehicleLog(log as VehicleLogCreateBody);
-
+        switch (action) {
+            case "AddVehicleLog":
+                registerVehicleLog(log as VehicleLogCreateBody);
+                break;
+            case "EditVehicleLog":
+                editVehicleLog(log as VehicleLogUpdateBody);
+                break;
+        }
         hideDialog();
     };
 
@@ -101,6 +113,11 @@ export function VehicleLogs() {
 
     const renderActionButtons = (rowData: VehicleLog) => (
         <>
+            <Button
+                className="p-button-text mx-1 my-1"
+                icon="pi pi-pencil"
+                onClick={ () => { openEditVehicleLogDialog(rowData); } }
+            />
             <Button
                 className="p-button-text p-button-danger mx-1 my-1"
                 icon="pi pi-trash"

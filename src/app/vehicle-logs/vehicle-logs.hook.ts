@@ -9,6 +9,7 @@ import {
 import {
     VehicleLog,
     VehicleLogCreateBody,
+    VehicleLogUpdateBody,
 } from "@app/vehicle-logs/vehicle-log.ts";
 import { useLoadingPane } from "@components/loading/loading-pane.hook.ts";
 import { useCallback, useMemo, useState } from "react";
@@ -57,6 +58,23 @@ export function useVehicleLogService(
         [ service, setError, setLoading, stopLoading ],
     );
 
+    const editVehicleLog = useCallback(
+        (log: VehicleLogUpdateBody) => {
+            setLoading("Updating vehicle log...");
+
+            service
+                .updateVehicleLog(log)
+                .then((res: VehicleLog) => {
+                    setLogs(prevVehicles => prevVehicles
+                        .map(v => v.id === res.id ? res : v),
+                    );
+                })
+                .then(stopLoading)
+                .catch(setError);
+        },
+        [ service, setError, setLoading, stopLoading ],
+    );
+
     const deleteVehicleLog = useCallback(
         (log: VehicleLog) => {
             setLoading("Deleting vehicle log...");
@@ -79,6 +97,7 @@ export function useVehicleLogService(
         loadingContent,
         fetchVehicleLogs,
         registerVehicleLog,
+        editVehicleLog,
         deleteVehicleLog,
         setLoading,
         stopLoading,

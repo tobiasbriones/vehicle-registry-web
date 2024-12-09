@@ -57,6 +57,7 @@ export function VehicleLogDialog(
         drivers,
         onSave,
         onHide,
+        selectedLog,
     }: VehicleLogDialogProps,
 ) {
     const actionToString = (action: DialogAction) => ({
@@ -77,6 +78,20 @@ export function VehicleLogDialog(
                 drivers={ drivers }
                 onSave={ log => { onSave(log, action); } }
                 onCancel={ onHide }
+            />
+        </Dialog>
+
+        <Dialog
+            className="crud-edit-dialog"
+            visible={ visible && action === "EditVehicleLog" }
+            onHide={ onHide }
+            closeIcon="pi pi-times"
+            header={ actionToString(action) }
+        >
+            <UpdateVehicleLogForm
+                onSave={ log => { onSave(log, action); } }
+                onCancel={ onHide }
+                selectedLog={ selectedLog }
             />
         </Dialog>
     </>;
@@ -167,7 +182,7 @@ function CreateVehicleLogForm(
                 ) => (
                     <div className="p-field">
                         <label>Event</label>
-                        
+
                         <div className="p-formgroup-inline flex gap-4 pt-2">
                             <div className="field-radiobutton">
                                 <RadioButton
@@ -179,7 +194,7 @@ function CreateVehicleLogForm(
                                 />
                                 <label htmlFor="entry">Entry</label>
                             </div>
-                            
+
                             <div className="field-radiobutton">
                                 <RadioButton
                                     id="exit"
@@ -233,6 +248,179 @@ function CreateVehicleLogForm(
         <Form
             validate={ validateVehicleLogCreate }
             initialValues={ emptyVehicleLogFormCreateBody }
+            onSubmit={ handleSubmit }
+            render={ formBody }
+        />
+    </>;
+}
+
+type UpdateVehicleLogFormProps = {
+    onSave: (log: VehicleLogUpdateBody) => void,
+    onCancel: () => void,
+    selectedLog?: VehicleLog | null,
+}
+
+function UpdateVehicleLogForm(
+    {
+        onSave,
+        onCancel,
+        selectedLog,
+    }: UpdateVehicleLogFormProps,
+) {
+    type NormalizedVehicleLog = VehicleLog & {
+        vehicleNumber: string,
+        driverFullName: string,
+        normalizedTimestamp: string | undefined;
+    }
+
+    const handleSubmit = (
+        formVehicleLog: NormalizedVehicleLog,
+        form: FormApi<NormalizedVehicleLog, NormalizedVehicleLog>,
+    ) => {
+        const apiForm: VehicleLogUpdateBody = {
+            id: formVehicleLog.id,
+            mileageInKilometers: parseInt(formVehicleLog.mileageInKilometers.toString()),
+            logType: formVehicleLog.logType,
+        };
+
+        onSave(apiForm);
+
+        form.restart();
+    };
+
+    const normalizedSelectedLog: NormalizedVehicleLog | undefined =
+        selectedLog !== undefined && selectedLog !== null
+        ? {
+                ...selectedLog,
+                vehicleNumber: selectedLog.vehicle.number,
+                driverFullName: driverFullName(selectedLog.driver).toUpperCase(),
+                normalizedTimestamp: selectedLog.timestamp.toLocaleString(),
+            }
+        : undefined;
+
+    const formBody = ({ handleSubmit }: FormRenderProps<NormalizedVehicleLog, NormalizedVehicleLog>) => <>
+        <form onSubmit={ event => { void handleSubmit(event); } }>
+            <Field
+                name="id"
+                render={ ({ input, meta }) =>
+                    <DialogFormField
+                        id="id"
+                        label="ID"
+                        meta={ meta }
+                        input={ input }
+                        type="number"
+                        disabled
+                    />
+                }
+            />
+
+            <Field
+                name="vehicleNumber"
+                render={ ({ input, meta }) =>
+                    <DialogFormField
+                        id="vehicleNumber"
+                        label="Vehicle"
+                        meta={ meta }
+                        input={ input }
+                        disabled
+                    />
+                }
+            />
+
+            <Field
+                name="driverFullName"
+                render={ ({ input, meta }) =>
+                    <DialogFormField
+                        id="driverFullName"
+                        label="Driver"
+                        meta={ meta }
+                        input={ input }
+                        disabled
+                    />
+                }
+            />
+
+            <Field
+                name="normalizedTimestamp"
+                render={ ({ input, meta }) =>
+                    <DialogFormField
+                        id="normalizedTimestamp"
+                        label="Timestamp"
+                        meta={ meta }
+                        input={ input }
+                        disabled
+                    />
+                }
+            />
+
+            <Field
+                name="logType"
+                render={ (
+                    { input }: FieldRenderProps<VehicleLogType>,
+                ) => (
+                    <div className="p-field">
+                        <label>Event</label>
+
+                        <div className="p-formgroup-inline flex gap-4 pt-2">
+                            <div className="field-radiobutton">
+                                <RadioButton
+                                    id="entry"
+                                    value="entry"
+                                    name={ input.name }
+                                    onChange={ e => { input.onChange(e.value); } }
+                                    checked={ input.value === "entry" }
+                                />
+                                <label htmlFor="entry">Entry</label>
+                            </div>
+
+                            <div className="field-radiobutton">
+                                <RadioButton
+                                    id="exit"
+                                    value="exit"
+                                    name={ input.name }
+                                    onChange={ e => { input.onChange(e.value); } }
+                                    checked={ input.value === "exit" }
+                                />
+                                <label htmlFor="exit">Exit</label>
+                            </div>
+                        </div>
+                    </div>
+                ) }
+            />
+
+            <Field
+                name="mileageInKilometers"
+                render={ ({ input, meta }) =>
+                    <DialogFormField
+                        id="mileageInKilometers"
+                        label="Mileage (KMs)"
+                        meta={ meta }
+                        input={ input }
+                        type="number"
+                    />
+                }
+            />
+
+            <div className="flex mt-4 justify-content-end gap-4">
+                <Button
+                    label="Cancel"
+                    icon="pi pi-times"
+                    onClick={ onCancel }
+                    className="p-button-text"
+                />
+                <Button
+                    type="submit"
+                    label="Save"
+                    icon="pi pi-check"
+                    autoFocus
+                />
+            </div>
+        </form>
+    </>;
+
+    return <>
+        <Form
+            initialValues={ normalizedSelectedLog }
             onSubmit={ handleSubmit }
             render={ formBody }
         />
