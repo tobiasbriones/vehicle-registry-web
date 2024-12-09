@@ -10,11 +10,17 @@ import { VehicleLogDialog } from "@app/vehicle-logs/VehicleLogDialog.tsx";
 import { isAppError } from "@common/app/app.error.ts";
 import { valToString } from "@common/utils.ts";
 import { AppErrorPane } from "@components/app-error/AppErrorPane.tsx";
+import {
+    DeleteConfirmItem,
+} from "@components/crud/delete-confirm-dialog/delete-confirm-item.ts";
+import {
+    DeleteConfirmDialog,
+} from "@components/crud/delete-confirm-dialog/DeleteConfirmDialog.tsx";
 import { LoadingPane } from "@components/loading/LoadingPane.tsx";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
     VehicleLog,
     VehicleLogCreateBody,
@@ -35,6 +41,7 @@ export function VehicleLogs() {
         loadingContent,
         fetchVehicleLogs,
         registerVehicleLog,
+        deleteVehicleLog,
         setLoading,
         stopLoading,
         setError,
@@ -54,6 +61,9 @@ export function VehicleLogs() {
         openNewVehicleLogDialog,
         hideDialog,
     } = useVehicleLogDialog();
+
+    const [ deleteConfirmItem, setConfirmDeleteItem ]
+        = useState<DeleteConfirmItem<VehicleLog> | undefined>(undefined);
 
     const onSave = (
         log: VehicleLogCreateBody | VehicleLogUpdateBody,
@@ -89,6 +99,22 @@ export function VehicleLogs() {
         </div>
     );
 
+    const renderActionButtons = (rowData: VehicleLog) => (
+        <>
+            <Button
+                className="p-button-text p-button-danger mx-1 my-1"
+                icon="pi pi-trash"
+                onClick={ () => {
+                    setConfirmDeleteItem({
+                        item: rowData,
+                        id: rowData.id.toString(),
+                        label: "vehicle log",
+                    });
+                } }
+            />
+        </>
+    );
+
     useEffect(fetchVehicleLogs, [ fetchVehicleLogs ]);
     useEffect(fetchVehicles, [ fetchVehicles ]);
     useEffect(fetchDrivers, [ fetchDrivers ]);
@@ -120,6 +146,7 @@ export function VehicleLogs() {
                 />
 
                 <Column field="mileageInKilometers" header="Mileage (KMs)" />
+                <Column body={ renderActionButtons } header="Actions" />
             </DataTable>
 
             <VehicleLogDialog
@@ -130,6 +157,14 @@ export function VehicleLogs() {
                 onSave={ onSave }
                 onHide={ hideDialog }
                 selectedLog={ selectedVehicleLog }
+            />
+
+            <DeleteConfirmDialog
+                confirmItem={ deleteConfirmItem }
+                onDelete={ deleteVehicleLog }
+                onCancel={ () => {
+                    setConfirmDeleteItem(undefined);
+                } }
             />
         </div>
     </>;

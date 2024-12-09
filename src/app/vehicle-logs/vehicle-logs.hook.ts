@@ -57,11 +57,29 @@ export function useVehicleLogService(
         [ service, setError, setLoading, stopLoading ],
     );
 
+    const deleteVehicleLog = useCallback(
+        (log: VehicleLog) => {
+            setLoading("Deleting vehicle log...");
+
+            service
+                .deleteVehicleLog(log.id)
+                .then(() => {
+                    setLogs(prevVehicles => prevVehicles.filter(
+                        v => v.id !== log.id,
+                    ));
+                })
+                .then(stopLoading)
+                .catch(setError);
+        },
+        [ service, setError, setLoading, stopLoading ],
+    );
+
     return {
         logs,
         loadingContent,
         fetchVehicleLogs,
         registerVehicleLog,
+        deleteVehicleLog,
         setLoading,
         stopLoading,
         setError,
