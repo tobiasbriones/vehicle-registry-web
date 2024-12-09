@@ -44,7 +44,7 @@ export const newVehicleLogService = (): VehicleLogService => ({
 
         await requireNoError(response);
 
-        return await response.json() as VehicleLog;
+        return parseVehicleLogResponse(response);
     },
 
     async getVehicleById(id: string) {
@@ -52,9 +52,7 @@ export const newVehicleLogService = (): VehicleLogService => ({
 
         await requireNoError(response);
 
-        const rawLog = await response.json() as VehicleLog;
-
-        return { ...rawLog, timestamp: new Date(rawLog.timestamp) };
+        return parseVehicleLogResponse(response);
     },
 
     async getAllVehicleLogs(limit, page, filter) {
@@ -113,7 +111,7 @@ export const newVehicleLogService = (): VehicleLogService => ({
 
         await requireNoError(response);
 
-        return await response.json() as VehicleLog;
+        return parseVehicleLogResponse(response);
     },
 
     async deleteVehicleLog(id: string) {
@@ -124,3 +122,9 @@ export const newVehicleLogService = (): VehicleLogService => ({
         await requireNoError(response);
     },
 });
+
+async function parseVehicleLogResponse(response: Response): Promise<VehicleLog> {
+    const rawLog = await response.json() as VehicleLog;
+
+    return { ...rawLog, timestamp: new Date(rawLog.timestamp) };
+}
