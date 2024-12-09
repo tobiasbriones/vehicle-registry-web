@@ -27,7 +27,7 @@ export type VehicleLogService = {
     ) => Promise<VehicleLog[]>;
 
     updateVehicleLog: (log: VehicleLogUpdateBody) => Promise<VehicleLog>;
-    deleteVehicleLog: (id: string) => Promise<void>;
+    deleteVehicleLog: (id: number) => Promise<void>;
 };
 
 const logsUrl = `${ apiUrl }/logs`;
@@ -114,8 +114,8 @@ export const newVehicleLogService = (): VehicleLogService => ({
         return parseVehicleLogResponse(response);
     },
 
-    async deleteVehicleLog(id: string) {
-        const response = await fetch(`${ logsUrl }/${ id }`, {
+    async deleteVehicleLog(id: number) {
+        const response = await fetch(`${ logsUrl }/${ id.toString() }`, {
             method: "DELETE",
         });
 
