@@ -125,7 +125,7 @@ function CreateVehicleLogForm(
 
     const driversWithFullName = drivers.map(driver => ({
         ...driver,
-        fullName: driverFullName(driver),
+        fullName: driverFullName(driver).toUpperCase(),
     }));
 
     const formBody = ({ handleSubmit }: FormRenderProps<VehicleLogFormCreateBody, VehicleLogFormCreateBody>) => <>
@@ -158,8 +158,7 @@ function CreateVehicleLogForm(
                     <div className="p-field">
                         <label htmlFor="driver">Driver</label>
                         <Dropdown
-                            className="w-full p-inputtext p-component uppercase"
-                            panelStyle={ { textTransform: "uppercase" } }
+                            className="w-full p-inputtext p-component"
                             id="driver"
                             value={ input.value }
                             options={ driversWithFullName }
