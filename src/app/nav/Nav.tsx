@@ -21,6 +21,11 @@ export const Nav = () => {
             command: () => { navigate("/"); },
         },
         {
+            label: "Logs",
+            icon: "pi pi-gauge",
+            command: () => { navigate("/logs"); },
+        },
+        {
             label: "Vehicles",
             icon: "pi pi-car",
             command: () => { navigate("/vehicles"); },

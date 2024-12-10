@@ -5,7 +5,7 @@
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import "@app/App.css";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export function App() {
     return <>
@@ -143,8 +143,6 @@ function Benefits() {
 }
 
 function Cta() {
-    const navigate = useNavigate();
-
     return <>
         <section className="cta">
             <h2> Ready to transform your vehicle management?</h2>
@@ -152,8 +150,19 @@ function Cta() {
             <Button
                 label="Request a Demo"
                 className="p-button-raised p-button-rounded"
-                onClick={ () => { navigate("/access");} }
-            />
+            >
+                <Link
+                    to="/logs"
+                    style={ {
+                        position: "absolute",
+                        width: "100%",
+                        height: "100%",
+                        left: 0,
+                        top: 0,
+                        zIndex: "2",
+                    } }
+                />
+            </Button>
         </section>
     </>;
 }

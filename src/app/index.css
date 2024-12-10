@@ -72,6 +72,17 @@ button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
 }
 
+.p-datepicker-title button {
+    color: white;
+}
+
+button.p-datepicker-prev,
+button.p-datepicker-next {
+    padding: 0;
+    border-radius: 50%;
+    color: white;
+}
+
 @media (prefers-color-scheme: light) {
     :root {
         color: #213547;

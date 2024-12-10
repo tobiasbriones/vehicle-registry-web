@@ -80,6 +80,46 @@ It features a footer section with all the detailed links and information.
 
 ![](docs/screenshots/landing-page-footer.png)
 
+### Vehicle Logs
+
+It provides a system to register robust vehicle logs with driver, event
+(`entry` or `exit`), timestamp, and mileage. It facilitates a filter by vehicle,
+driver, and date (day) to target specific logs.
+
+**Vehicle Logs**
+
+![](docs/screenshots/vehicle-logs.png)
+
+**Adding a New Log**
+
+![](docs/screenshots/adding-a-new-log.png)
+
+**Event Validation**
+
+Events must be coherent, so if a vehicle is outside it'll need to enter and vice
+versa. For example, a vehicle which last event was `entry` cannot enter again
+until it logs `exit`.
+
+![](docs/screenshots/event-validation.png)
+
+**Mileage Validation**
+
+Vehicle mileage is increasing or can be reset to zero.
+
+![](docs/screenshots/event-validation.png)
+
+**Filtering Logs by Date**
+
+![](docs/screenshots/filtering-logs-by-date.png)
+
+**Filtering Logs by Date and Driver**
+
+![](docs/screenshots/filtering-logs-by-date-and-driver.png)
+
+**Filtering Logs by Date, Driver, and Vehicle**
+
+![](docs/screenshots/filtering-logs-by-date-driver-and-vehicle.png)
+
 ### CRUD
 
 It implements reliable CRUD (Create Read Update Delete) operations to define and
