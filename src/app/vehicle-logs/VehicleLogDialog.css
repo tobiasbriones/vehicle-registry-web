@@ -10,7 +10,24 @@ form > .p-field {
     margin-bottom: 1rem;
 }
 
-.p-dropdown-panel {
-    left: 50% !important;
-    transform: translateX(-50%);
+    .crud-edit-dialog.wide {
+    width: 100%;
+}
+
+@media (min-width: 600px) {
+    .crud-edit-dialog.wide {
+        width: 60%;
+    }
+}
+
+@media (min-width: 960px) {
+    .crud-edit-dialog.wide {
+        width: 40%;
+    }
+}
+
+@media (min-width: 1280px) {
+    .crud-edit-dialog.wide {
+        width: 480px;
+    }
 }

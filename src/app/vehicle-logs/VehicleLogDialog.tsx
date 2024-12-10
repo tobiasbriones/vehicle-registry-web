@@ -67,7 +67,7 @@ export function VehicleLogDialog(
 
     return <>
         <Dialog
-            className="crud-edit-dialog"
+            className="crud-edit-dialog wide"
             visible={ visible && action === "AddVehicleLog" }
             onHide={ onHide }
             closeIcon="pi pi-times"
@@ -82,7 +82,7 @@ export function VehicleLogDialog(
         </Dialog>
 
         <Dialog
-            className="crud-edit-dialog"
+            className="crud-edit-dialog wide"
             visible={ visible && action === "EditVehicleLog" }
             onHide={ onHide }
             closeIcon="pi pi-times"
