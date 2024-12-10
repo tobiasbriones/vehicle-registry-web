@@ -6,10 +6,12 @@ import { driverFullName } from "@app/drivers/driver.ts";
 import {
     useVehicleLogDataServices,
 } from "@app/vehicle-logs/vehicle-log-data.hook.ts";
+import { ReadAllQueryParams } from "@app/vehicle-logs/vehicle-log.service.ts";
 import {
     DialogAction,
     VehicleLogDialog,
 } from "@app/vehicle-logs/VehicleLogDialog.tsx";
+import { VehicleLogFilter } from "@app/vehicle-logs/VehicleLogFilter.tsx";
 import { isAppError } from "@common/app/app.error.ts";
 import { valToString } from "@common/utils.ts";
 import { AppErrorPane } from "@components/app-error/AppErrorPane.tsx";
@@ -39,6 +41,8 @@ export function VehicleLogs() {
     const maxLimit = 30;
     const defPage = 1;
 
+    const [ filter, setFilter ] = useState<ReadAllQueryParams>({});
+
     const {
         logs,
         loadingContent,
@@ -49,7 +53,7 @@ export function VehicleLogs() {
         setLoading,
         stopLoading,
         setError,
-    } = useVehicleLogService(maxLimit, defPage);
+    } = useVehicleLogService(maxLimit, defPage, filter);
 
     const {
         vehicles,
@@ -86,13 +90,22 @@ export function VehicleLogs() {
     };
 
     const renderHeader = () => (
-        <div className="table-header flex-column sm:flex-row m-0">
-            <h2 className="my-2 sm:my-4">Vehicle Logs</h2>
-            <Button
-                className="mb-2 sm:mb-0"
-                label="Add Log"
-                icon="pi pi-plus"
-                onClick={ openNewVehicleLogDialog }
+        <div>
+            <div className="table-header flex-column sm:flex-row m-0">
+                <h2 className="my-2 sm:my-4">Vehicle Logs</h2>
+
+                <Button
+                    className="mb-2 sm:mb-0"
+                    label="Add Log"
+                    icon="pi pi-plus"
+                    onClick={ openNewVehicleLogDialog }
+                />
+            </div>
+
+            <VehicleLogFilter
+                vehicles={ vehicles }
+                drivers={ drivers }
+                onChange={ setFilter }
             />
         </div>
     );
@@ -147,20 +160,32 @@ export function VehicleLogs() {
                 rowsPerPageOptions={ [ 5, 10, 25, 50 ] }
             >
                 <Column className="uppercase" field="id" header="ID" />
-                <Column field="vehicle.number" header="Vehicle" />
 
-                <Column
-                    className="uppercase"
-                    header="Driver"
-                    body={ ({ driver }: VehicleLog) => driverFullName(driver) }
-                />
+                { filter.vehicleNumber === undefined &&
+                  <Column field="vehicle.number" header="Vehicle" />
+                }
+
+                {
+                    filter.driverLicenseId === undefined &&
+                    <Column
+                        className="uppercase"
+                        header="Driver"
+                        body={ ({ driver }: VehicleLog) => driverFullName(driver) }
+                    />
+                }
 
                 <Column className="uppercase" field="logType" header="Event" />
 
-                <Column
-                    header="Timestamp"
-                    body={ ({ timestamp }: VehicleLog) => timestamp.toLocaleString() }
-                />
+                { filter.date === undefined
+                  ? <Column
+                      header="Timestamp (Locale)"
+                      body={ ({ timestamp }: VehicleLog) => timestamp.toLocaleString() }
+                  />
+                  : <Column
+                      header="Time (Locale)"
+                      body={ ({ timestamp }: VehicleLog) => timestamp.toLocaleTimeString() }
+                  />
+                }
 
                 <Column field="mileageInKilometers" header="Mileage (KMs)" />
                 <Column body={ renderActionButtons } header="Actions" />

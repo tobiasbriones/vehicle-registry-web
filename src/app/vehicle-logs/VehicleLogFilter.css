@@ -1,0 +1,23 @@
+/* Copyright (c) 2024 Tobias Briones. All rights reserved. */
+/* SPDX-License-Identifier: MIT */
+/* This file is part of https://github.com/tobiasbriones/vehicle-registry-web */
+
+.filter {
+    max-width: 25rem;
+    flex-direction: column;
+}
+
+.text-center input {
+    text-align: center;
+}
+
+@media (min-width: 1360px) {
+    .filter {
+        flex-direction: row;
+    }
+
+    .filter .flex-item,
+    .filter .flex-item input {
+        width: 25rem;
+    }
+}
