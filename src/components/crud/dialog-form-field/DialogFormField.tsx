@@ -4,7 +4,7 @@
 
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
-import { KeyboardEventHandler } from "react";
+import { HTMLInputTypeAttribute, KeyboardEventHandler } from "react";
 import { FieldInputProps, FieldMetaState } from "react-final-form";
 
 type FormFieldProps = {
@@ -12,6 +12,7 @@ type FormFieldProps = {
     label: string,
     autoFocus?: boolean,
     disabled?: boolean,
+    type?: HTMLInputTypeAttribute,
     meta: FieldMetaState<unknown>,
     input: FieldInputProps<string | undefined>,
 };
@@ -22,6 +23,7 @@ export function DialogFormField(
         label,
         autoFocus,
         disabled,
+        type,
         meta,
         input,
     }: FormFieldProps,
@@ -48,6 +50,7 @@ export function DialogFormField(
                 { ...input }
                 autoFocus={ autoFocus }
                 disabled={ disabled }
+                type={ type }
                 className={ classNames({
                     "p-invalid": isFormFieldValid(meta),
                 }) }

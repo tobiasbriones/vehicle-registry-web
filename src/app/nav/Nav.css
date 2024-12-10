@@ -18,6 +18,10 @@
     color: var(--primary-color-text, #ffffff);
 }
 
+.p-menuitem-text {
+    font-weight: bold;
+}
+
 .p-menuitem-icon {
     color: var(--indigo-200, #ffffff);
 }
@@ -75,7 +79,8 @@
     }
 
     .p-menuitem-text {
-        color: var(--primary-color-text, #ffffff);
+        color: #cfd8dc;
+        font-weight: bold;
     }
 
     .p-menuitem-content:hover {

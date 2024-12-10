@@ -54,6 +54,9 @@ export const validateDriver = (formDriver: Driver) => {
     else if (formDriver.licenseId.length > 20) {
         errors.licenseId = "Driver license ID maximum length is 20 characters.";
     }
+    else if (/^[A-Za-z0-9-]+$/.exec(formDriver.licenseId) === null) {
+        errors.licenseId = "Invalid license ID format. Only letters, numbers, and hyphens are allowed.";
+    }
 
     if (!formDriver.firstName || formDriver.firstName.trim() === "") {
         errors.firstName = "Driver first name cannot be blank.";
