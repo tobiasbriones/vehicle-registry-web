@@ -1,6 +1,6 @@
 {
     "name": "vehicle-registry-web",
-    "version": "0.2.0",
+    "version": "0.2.0-dev",
     "description": "Frontend client for a vehicle registration web app that allows entrance and leave.",
     "main": "index.js",
     "type": "module",
